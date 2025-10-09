@@ -1,0 +1,1 @@
+if !multi {instance_destroy();}

@@ -1,0 +1,1 @@
+troom = asset_get_index("rm" + string(global.world) + "_" + string(global.level) + "_under");

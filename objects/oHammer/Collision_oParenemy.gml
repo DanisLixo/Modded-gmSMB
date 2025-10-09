@@ -1,0 +1,1 @@
+if clashroyale {other.state = es.die;}

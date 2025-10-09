@@ -1,0 +1,1 @@
+makeMarioJump = true;

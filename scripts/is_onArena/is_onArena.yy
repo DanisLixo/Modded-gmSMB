@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"is_onArena",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"is_onArena",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

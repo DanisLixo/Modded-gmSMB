@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ps_jumpcut",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ps_jumpcut",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Objects/Mario/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

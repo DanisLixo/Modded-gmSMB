@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"loadsettings",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"loadsettings",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

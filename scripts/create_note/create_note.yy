@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"create_note",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"create_note",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"m_array_menu",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"m_array_menu",
+  "parent":{
+    "name":"Menu",
+    "path":"folders/Objects/Game/Menu.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

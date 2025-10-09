@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"custom_sprite",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"custom_sprite",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

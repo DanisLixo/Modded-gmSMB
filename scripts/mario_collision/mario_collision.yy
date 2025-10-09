@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"mario_collision",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"mario_collision",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

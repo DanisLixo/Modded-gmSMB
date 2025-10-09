@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrImportModSprites",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrImportModSprites",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

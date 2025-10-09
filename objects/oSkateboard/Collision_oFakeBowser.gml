@@ -1,0 +1,1 @@
+if hspd != 0 {other.life = 0;}

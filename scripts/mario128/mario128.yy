@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"mario128",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"mario128",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

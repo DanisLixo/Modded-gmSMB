@@ -1,0 +1,1 @@
+if instance_exists(oMenutitle) {oMenutitle.alarm[0] = 2;}

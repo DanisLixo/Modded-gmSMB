@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ps_enum",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ps_enum",
+  "parent":{
+    "name":"Mario",
+    "path":"folders/Objects/Mario.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

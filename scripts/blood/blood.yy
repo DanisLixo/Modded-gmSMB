@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"blood",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"blood",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

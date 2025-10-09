@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"update_player",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"update_player",
+  "parent":{
+    "name":"gmSMBx2",
+    "path":"gmSMBx2.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

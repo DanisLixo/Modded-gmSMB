@@ -1,0 +1,2 @@
+if (!onview()) 
+{exit;}

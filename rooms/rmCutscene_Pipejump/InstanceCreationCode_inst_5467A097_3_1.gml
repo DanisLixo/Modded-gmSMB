@@ -1,0 +1,2 @@
+handleRoomChange = true;
+makeMarioJump = true;

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"on_desktop",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"on_desktop",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"update_gun",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"update_gun",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
