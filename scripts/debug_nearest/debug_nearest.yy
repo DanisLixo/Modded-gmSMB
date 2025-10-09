@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "debug_nearest",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Functions",
-    "path": "folders/Functions.yy",
+  "$GMScript":"v1",
+  "%Name":"debug_nearest",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"debug_nearest",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

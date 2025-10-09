@@ -11,5 +11,5 @@ else {
 }
 
 
-alarm[2] = interval*4
+oGame.alarm[2] = interval*4
 

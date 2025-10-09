@@ -21,7 +21,7 @@ if mario_freeze() != 1
 
 var m = collision_rectangle(x+3*face,y,x+3*-face,y+3*face,oMario,true,false)
 
-if m && m.hspd <= 0.5 && global.moveobjs = true && m.state = ps.nah
+if m && m.hspd <= 0.5 && global.moveObjs = true && m.state = ps.nah
 {	
 	face = -face
 	sfx(sndBump,0);

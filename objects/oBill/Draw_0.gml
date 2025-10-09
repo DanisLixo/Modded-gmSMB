@@ -1,8 +1,7 @@
+event_inherited();
+
 if !onview() and (oMario.x > x+SCREENW || oMario.x < x-SCREENW)
 {instance_destroy();}
-
-if !onview()
-{exit;}
 
 shader_set(shdColorswap);
 	apply_palette(sPalette_goomba,global.environment,image_alpha)

@@ -6,7 +6,6 @@ function cs(capestring = "") {
 	}
 	capestring = string_replace(capestring, "run", "walk")
 
-	
 	if sprite_exists(asset_get_index(capestring))
 		{return asset_get_index(capestring);}
 	else

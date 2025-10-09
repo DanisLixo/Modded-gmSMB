@@ -4,7 +4,7 @@ if char = "Goldron"
 	{yoff = -abs(sin(x/10))*5}
 	else
 	{yoff = 0;}
-	if powerup = "s"	{ind = 0;}
+	if (powerup = "s" || powerup = "sf")	{ind = 0;}
 	if powerup = "b"	{ind = 1;}
 	if powerup = "f" || powerup = "c"	{ind = 2;}
 }
@@ -16,7 +16,14 @@ if global.scaled = false {
 	if char = "Duke"	{scale = 0.2;}
 	if char = "Pokey" {scale = 0.2;}
 	if char = "Max Verstappen" {scale = 0.2;}
-	if char = "Anton" && powerup = "s"	{scale = 0.6}
+	if char = "Anton" && (powerup = "s" || powerup = "sf")	{scale = 0.6}
 	if char = "Peppino"	{scale = 0.6}
-	if char = "1pixelMario" && powerup = "s"	{scale = 0.5}
+	if char = "1pixelMario" && (powerup = "s" || powerup = "sf")	{scale = 0.5}
+}
+else if image_xscale > scale
+{
+	image_xscale = scale;
+	image_yscale = scale;
+	
+	scale = 1;
 }

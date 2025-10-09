@@ -1,3 +1,11 @@
+if global.bowseronly 
+{instance_create_depth(x,y,depth,oFakeBowser); instance_destroy();}
+
+dup = false;
+multiply = true;
+
+alarm[0] = 2;
+
 hspd = 0;
 vspd = 0;
 
@@ -33,3 +41,5 @@ if !instance_exists(oIsArena)
 
 given8000 = false
 shellcombo = 4
+
+bleeding = false;

@@ -5,7 +5,7 @@ var cy = SCREENH
 var cwview = cx+SCREENW+24
 
 //for 1:1 comparision screen
-if global.aspectratio = "ORIGINAL"
+if global.aspectRatio = "ORIGINAL"
 {
 	var cheepspawn = round(random_range(cx,cwview))
 }
@@ -33,13 +33,13 @@ if start {
 				if oMario.hspd = 0 {cwview = cx+SCREENW-64}
 				
 				var cheep = instance_create_depth(cheepspawn,cy,depth,o2Cheep);
-				cheep.cheeptype = 2
-				spawn = choose(0,60,60,60,60,100,100,100,100,100,100,120,120);
+				if instance_exists(cheep) {cheep.cheeptype = 2;}
+				spawn = choose(10,60,60,60,60,100,100,100,100,100,100,120,120);
 			}
 		}
 	}
 
 	with(oEndspawner) {
-	if place_meeting(x,y,oMario) {oCheepspawner.spawn = -100;}
+		if place_meeting(x,y,oMario) {oCheepspawner.spawn = -100;}
 	}
 }

@@ -1,2 +1,2 @@
-xplace = x
-alarm[0] = 5
+//xplace = x
+//alarm[0] = 5

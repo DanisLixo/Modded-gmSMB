@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "cape_sprite",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Cape",
-    "path": "folders/Objects/Miscfx/AppearsOnline/Cape.yy",
+  "$GMScript":"v1",
+  "%Name":"cape_sprite",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cape_sprite",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

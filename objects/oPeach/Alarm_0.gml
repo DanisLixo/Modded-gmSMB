@@ -3,6 +3,8 @@ if modernmode = false
 else	
 {var t = instance_create_depth(camera_get_view_x(view_camera[0])+SCREENW/2,tymy,depth,oText);}
 
-t.text = "THANK YOU "+string_upper(global.player)+"!";
+t.text = "THANK YOU "+string_upper(global.playerName)+"!";
+if global.multiplayer && instance_exists(oLuigi) 
+{t.text = "THANK YOU "+string_upper(global.playerName)+ "AND"+string_upper(global.playertwoName)+"!";}
 
 alarm[1] = interval*2.5

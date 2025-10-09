@@ -18,10 +18,14 @@ enum network
 	chat,
 	hostbegin,
 	sendraceresult,
+	sendarenaresult,
 	finished,
 	sync,
 	explosion,
-	raceplace,
+	place,
+	arenaplace,
 	starspawn,
+	stardrop,
+	arenagoal,
 	disconnect
 }

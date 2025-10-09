@@ -6,3 +6,4 @@ facingdir = -1
 holder = noone
 
 throwed = false
+clashroyale = false

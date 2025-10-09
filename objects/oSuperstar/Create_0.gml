@@ -1,16 +1,8 @@
-rot = 0;
+image_xscale = 0;
+image_yscale = 0;
 
-spd = 1.5;
-facing = choose(-1,1);
-hspd = facing*spd;
-vspd = 0;
-grounded = false;
+c = 0;
 
+appeared = false;
 
-
-
-
-
-
-
-
+ind = 0;

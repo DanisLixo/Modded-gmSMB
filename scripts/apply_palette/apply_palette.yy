@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "apply_palette",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Functions",
-    "path": "folders/Functions.yy",
+  "$GMScript":"v1",
+  "%Name":"apply_palette",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"apply_palette",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

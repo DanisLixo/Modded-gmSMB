@@ -53,8 +53,26 @@ if place_meeting(x+facing,y,oCol)
 {facing = -facing; sfx(sndBump,1); throwed = true}
 
 if place_meeting(x+facing,y,oMario) and throwed = true {
-	if m.powerup != "f" {pufunc();}
+	if m.powerup != "h" {pufunc();}
 	else {instance_destroy();}
+}
+
+if instance_place(x,y,oBowser)
+	{
+		sfx(sndKick,1);
+		points(200,true)
+		instance_place(x,y,oBowser).life--;
+		if !back facing = -facing
+		throwed = true
+}
+if instance_place(x,y,oFakeBowser)
+	{
+		sfx(sndKick,1);
+		points(200,true)
+		instance_place(x,y,oFakeBowser).life--;
+		if !back facing = -facing
+		throwed = true
+		exit;
 }
 
 if instance_place(x,y,oParenemy) && instance_place(x,y,oParenemy).state != es.die && instance_place(x,y,oParenemy).state != es.stomp
@@ -75,22 +93,6 @@ if instance_place(x,y,oPiranha)
 		if !back facing = -facing
 		throwed = true
 }
-if instance_place(x,y,oBowser)
-	{
-		sfx(sndKick,1);
-		points(200,true)
-		instance_place(x,y,oBowser).life--;
-		if !back facing = -facing
-		throwed = true
-}
-if instance_place(x,y,oFakeBowser)
-	{
-		sfx(sndKick,1);
-		points(200,true)
-		instance_place(x,y,oFakeBowser).life--;
-		if !back facing = -facing
-		throwed = true
-}
 
 if global.pvp and instance_place(floor(x),floor(y),oOtherplayer) 
 {if !back facing = -facing; throwed = true;}
@@ -103,10 +105,11 @@ if back {
 		instance_nearest(x,y,oParblock).triggerbreak = true;
 	}
 	
+	var bbox = abs((m.x)-x) > 16? m.bbox_bottom : m.bbox_top
 	facing = -sign(floor((m.x)-x));
 	throwed = true;
 	var distance_x = ((m.x)-x); hspd = (distance_x/50) + 2*sign(floor((m.x)-x));
-	var distance_y = (m.bbox_top); vspd = (distance_y/50) + 2*sign(floor((m.y)-y));
+	var distance_y = (bbox-y); vspd = (distance_y/35);
 	expire++
 	if expire >= 180 {instance_destroy()}
 }

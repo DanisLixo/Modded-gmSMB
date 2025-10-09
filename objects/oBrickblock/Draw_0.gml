@@ -19,9 +19,8 @@ if blockstate != -1 {
 		break;
 	}
 }
-
 shader_set(shdColorswap)
 	if layer_exists("Tiles_secret") {apply_palette(sPalette_tilesecret,global.environment+1,image_alpha)}
-	else {apply_palette(sPalette_tilebrown,global.environment,image_alpha)}
+	else if image_index != 2 {apply_palette(sPalette_tilebrown,global.environment,image_alpha)}
 	draw_self();
 shader_reset();

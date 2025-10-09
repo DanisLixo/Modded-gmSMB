@@ -14,7 +14,7 @@ if instance_place(x,y,oMario) || instance_place(x,y,oOtherplayer) {
 		draw_text(x,bbox_top-16,"GO TO EXTRA LEVEL")
 	}
 	else if global.arena != 0 {
-		draw_text(x,bbox_top-16,"GO TO ARENA MAP "+string(global.arena-1))
+		draw_text(x,bbox_top-16,"BATTLE IN PROGRESS...")
 	}
 	else if global.race {
 		draw_text(x,bbox_top-16,"RACE IN PROGRESS... ")

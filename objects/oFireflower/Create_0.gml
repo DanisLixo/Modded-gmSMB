@@ -10,10 +10,10 @@ pufunc = function()
 	{
 		with(m)
 		{
-			if powerup = "s"
+			if (powerup = "s" || powerup = "sf")
 			{state = ps.grow;}
-			else if powerup = "b" || powerup = "c"
-			{state = ps.firetransform;}
+			else if powerup != "f"
+			{powerup = "f"; state = ps.transform;}
 			else
 			{sfx(sndPowerup,1);}
 		}
@@ -23,18 +23,17 @@ pufunc = function()
 	{
 		with(oPlayer)
 		{
-			if powerup = "s"
+			if (powerup = "s" || powerup = "sf")
 			{state = ps.grow;}
-			else if powerup = "b" || powerup = "c"
-			{state = ps.firetransform;}
+			else if powerup != "f"
+			{powerup = "f"; state = ps.transform;}
 			else
 			{sfx(sndPowerup,1);}
 		}
 	}
 	
 	instance_destroy();
-	points(1000,true)
-	global.hats += 1;
+	points(1000,true);
 }
 
 g = 1;

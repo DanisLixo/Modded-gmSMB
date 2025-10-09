@@ -1,1 +1,0 @@
-if room = rmDemoend {room_goto(rmSecret5)}

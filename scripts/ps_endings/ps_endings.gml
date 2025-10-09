@@ -5,6 +5,9 @@ function ps_flagpoledescend()
 	instance_deactivate_object(oFirebar)
 	instance_deactivate_object(oFireball)
 	
+	bgm(-1,true);
+	
+	in_cutscene = true;
 	flagpoletimer ++;
 	hspd = 0;
 	vspd = 0;
@@ -33,6 +36,7 @@ function ps_flagpoledescend()
 	
 	if flagpoletimer > room_speed * 2
 	{
+		if instance_number(oMario) == 1 || (instance_number(oMario) > 1 && (oMario.state == ps.flagpolefinish || oMario.state == ps.flagpoledescend))
 		bgm("Levelend",false)
 		
 		if (global.race || global.waiting || global.sync) and instance_exists(oClient)
@@ -56,6 +60,8 @@ function ps_flagpoledescend()
 
 function ps_flagpolefinish()
 {
+	in_cutscene = true;
+	
 	if instance_exists(oFlagpole)
 	{
 		if hspd < 1.5
@@ -76,9 +82,25 @@ function ps_flagpolefinish()
 		depth = 399;
 	}
 	
+	if jumpbuffer > 0 {
+		if vspd >= 0 {if (powerup == "s" || powerup == "sf") sfx(sndJump,0); else sfx(sndJumpbig,0);}
+		
+		vspd -= (holdjump/58);
+		jumpbuffer--;
+	}
 	
-	if instance_place(x,y,oPipeentranceright) && instance_place(x+1,y,oCol) && grounded
-	{state = ps.enterpiperight; pipeinforoom = instance_place(x,y,oPipeentranceright).troom; instance_place(x,y,oPipeentranceright).activated = true; sfx(sndWarp,1);}
+	if vspd > 0
+	{holdjump = -1;}
+	
+	if !grounded {spr = ms("sMario_{}_jump");}
+	
+	if (instance_place(x,y,oPipeentrance_horizontal) && instance_place(x+1,y,oCol) 
+	|| (instance_place(bbox_left,y,oPipeentrance_vertical) && instance_place(x,y+1,oCol))) && grounded {
+		state = ps.enterpipe; 
+		pipeinforoom = instance_place(x,y,oParpipeentrance).troom; 
+		instance_place(x,y,oParpipeentrance).activated = true; 
+		sfx(sndWarp,1);
+	}
 	
 	collide();
 }
@@ -91,6 +113,8 @@ function ps_castleending()
 	instance_deactivate_object(oFireball)
 	instance_deactivate_object(oHammer)
 	instance_deactivate_object(oBowserfire)
+	
+	in_cutscene = true;
 	invincible = -2; 
 	
 	if castleendingtrigger = true

@@ -3,9 +3,6 @@ function ps_normal()
 	if crouch = false {spin = false;}
 	sound = false;
 	
-	if jumps > 0 jumps = 0
-	
-	audio_stop_sound(sndOpacandastar)
 	holdjump = -1;
 	
 	var moveh = kr-kl
@@ -84,6 +81,7 @@ function ps_normal()
 	do_spincarp();
 	do_fire();
 	do_jump();
+	do_shoulderbash()
 	
 	if !grounded
 	{state = ps.jump;}
@@ -93,40 +91,25 @@ function ps_normal()
 	
 	collide()
 	
-	
-	if kd && powerup != "s" && char != "Dawn" && char != "Sonic" && firetimer = 0 
+	if kd && (powerup != "s" && powerup != "sf") && char != "Dawn" && char != "Sonic" && firetimer = 0 
 	{state = ps.crouch;}
 	else if kd && firetimer = 0 && (char = "Dawn" or char = "Sonic")
 	{state = ps.crouch;}
 	if kup
 	{state = ps.dance0;}
-	if kd && instance_place(x,y,oPipeentrance) && grounded
+	var _pe = instance_place(x,y,oPipeentrance_vertical)
+	if _pe
 	{
-		if instance_place(x,y,oPipeentrance).activated = "8_4" {state = ps.enterpipedown8_4;}
-		else {state = ps.enterpipedown;}
-		pipeinforoom = instance_place(x,y,oPipeentrance).troom; 
-		sfx(sndWarp,1);
-		
-		if powerup != "s" && char != "Dawn"
-		{spr = ms("sMario_{}_crouch");}
-		else if char = "Dawn"
-		{spr = ms("sMario_{}_downpipe");}
+		if kd && _pe.image_yscale == 1 && grounded 
+		|| ku && _pe.image_yscale == -1
+		{state = ps.enterpipe; pipeinforoom = _pe.troom; _pe.activated = true; sfx(sndWarp,1);}
 	}
-	if kr && instance_place(x,y,oPipeentranceright) && instance_place(x+1,y,oCol) && grounded
-	{state = ps.enterpiperight; pipeinforoom = instance_place(x,y,oPipeentranceright).troom; instance_place(x,y,oPipeentranceright).activated = true; sfx(sndWarp,1);}
 	
-	if kap && shoulderbash = 0 && char = "Wario" && powerup != "f" and global.abilities
+	_pe = instance_place(x,y,oPipeentrance_horizontal)
+	if _pe
 	{
-		state = ps.shoulderbash;
-		vspd = 0; hspd = 0;
-		shoulderbash = room_speed*0.5;
-		sfx(sndBoom,0);
-	}
-	if powerup = "f" && firetimer = 5 && char = "Wario" and global.abilities
-	{
-		state = ps.shoulderbash;
-		vspd = 0; hspd = 0;
-		shoulderbash = room_speed*0.5;
-		sfx(sndBoom,0);
+		if kr && _pe.image_xscale == 1 && instance_place(x+1,y,oCol) && grounded 
+		|| kl && _pe.image_xscale == -1 && instance_place(x+1,y,oCol) && grounded
+		{state = ps.enterpipe; pipeinforoom = _pe.troom; _pe.activated = true; sfx(sndWarp,1);}
 	}
 }

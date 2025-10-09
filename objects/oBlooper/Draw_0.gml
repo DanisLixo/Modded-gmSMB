@@ -1,5 +1,4 @@
-if !onview()
-{exit;}
+event_inherited();
 
 shader_set(shdColorswap);
 	apply_palette(sPalette_goomba,global.environment,image_alpha)

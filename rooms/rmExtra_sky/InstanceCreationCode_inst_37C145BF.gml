@@ -1,1 +1,0 @@
-troom = rm1_1_bonus

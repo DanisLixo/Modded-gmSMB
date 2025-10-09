@@ -1,7 +1,5 @@
 instance_activate_object(id);
 
-y += gspd
-
 var m = instance_place(x,y-4,oMario)
 
 if m
@@ -57,5 +55,6 @@ else {
 	}
 }
 
-if (gspd > maxgspd) gspd = maxgspd;
-if (gspd < -maxgspd) gspd = -maxgspd;
+gspd = clamp(gspd,-maxgspd,maxgspd);
+
+y += gspd;

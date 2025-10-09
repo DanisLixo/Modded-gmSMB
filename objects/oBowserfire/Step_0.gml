@@ -24,7 +24,7 @@ if readjust = true && round(y) != round(y/16)*16
 
 var m = instance_place(x+8*facingdir,y,oMario);
 
-if m && global.moveenys = true && m.state = ps.nah
+if m && global.moveEnys = true && m.state = ps.nah
 {
 	clashroyale = true
 	facingdir = -facingdir

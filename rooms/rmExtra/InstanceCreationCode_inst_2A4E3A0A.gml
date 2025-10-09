@@ -1,1 +1,0 @@
-facingdir = -facingdir

@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "game_init",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Functions",
-    "path": "folders/Functions.yy",
+  "$GMScript":"v1",
+  "%Name":"game_init",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"game_init",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

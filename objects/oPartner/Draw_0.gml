@@ -16,5 +16,10 @@ if starman != 0
 	gpu_set_fog(false,-1,1,1);
 	
 	if starman mod 3 = 0 && starman > 120
-	{var smsfx = instance_create_depth(x,y,depth+2,oStarmanFX); smsfx.image_xscale = image_xscale; smsfx.col = make_color_hsv((starman) mod 255,255,255); smsfx.image_index = image_index; smsfx.sprite_index = sprite_index;}
+	{
+		var smsfx = instance_create_depth(x,y,depth+2,oStarmanFX); 
+		smsfx.image_xscale = image_xscale; smsfx.col = make_color_hsv((starman) mod 255,255,255); 
+		smsfx.image_index = image_index; 
+		smsfx.sprite_index = sprite_index;
+	}
 }

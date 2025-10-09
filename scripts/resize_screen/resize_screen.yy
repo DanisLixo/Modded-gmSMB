@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "resize_screen",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Functions",
-    "path": "folders/Functions.yy",
+  "$GMScript":"v1",
+  "%Name":"resize_screen",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"resize_screen",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -15,16 +15,17 @@ pufunc = function()
 	{
 		with(m)
 		{
-			if powerup = "s"
+			if (powerup = "s" || powerup = "sf")
 			{state = ps.grow;}
 			else if powerup = "b"
-			{state = ps.firetransform;}
+			{state = ps.transform;}
 			else
 			{sfx(sndPowerup,1);}
+			
+			if powerup = "h" {global.hats += 1;}
 		}
 	}
 	
-	if oMario.powerup = "b" or oMario.powerup = "f" {global.hats += 1;}
 	points(1000,true);
 	instance_destroy();
 }

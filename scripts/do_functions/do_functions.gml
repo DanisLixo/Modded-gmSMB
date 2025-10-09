@@ -7,7 +7,7 @@ function do_jump()
 			{
 				sfx(sndStomp,0);
 				
-				vspd = -3; 
+				vspd = -4; 
 				state = ps.swim;
 				swimmin = 42;
 				
@@ -24,14 +24,14 @@ function do_jump()
 			{
 				jumpbuffer = 0;
 		
-				if powerup = "s"
+				if (powerup = "s" || powerup = "sf") || powerup = "sf"
 				{sfx(sndJump,1);}
 				else
 				{sfx(sndJumpbig,1);}
 				
 				spr = ms("sMario_{}_spinjump"); ind = 0;
 				
-				vspd = -3 -(abs(hspd)/6);
+				vspd = -4 -(abs(hspd)/6);
 				state = ps.jump;
 		
 				grounded = false;
@@ -39,11 +39,12 @@ function do_jump()
 			}
 		}
 	}
-	else if (grounded || (char = "Dawn" && jumps <= 1)) && (kjp or jumpbuffer > 0)
+	else if (grounded || (char = "Dawn" && !doubleJumped)) && (kjp or jumpbuffer > 0)
 	{
+		if state == ps.jump {doubleJumped = true;}
 		jumpbuffer = 0;
 
-		if powerup = "s"
+		if (powerup = "s" || powerup = "sf")
 		{sfx(sndJump,1);}
 		else
 		{sfx(sndJumpbig,1);}
@@ -53,11 +54,11 @@ function do_jump()
 		else
 			ind += 0.3
 		
-		if powerup = "s" {spr = ms("sMario_{}_jump");}
+		if (powerup = "s" || powerup = "sf") {spr = ms("sMario_{}_jump");}
 		else if !kd {spr = ms("sMario_{}_jump");}
 		if char == "Dawn" {
 			if !kd  {spr = ms("sMario_{}_jump");}
-			else if retrochance >= 90 and char =  "Dawn" and powerup = "s" 
+			else if retrochance >= 90 and char =  "Dawn" and (powerup = "s" || powerup = "sf") 
 			{spr = ms("sMario_s_jumpretro");}
 		}
 		
@@ -66,9 +67,9 @@ function do_jump()
 		if state = ps.shoulderbash
 		{spr = ms("sMario_{}_shoulderbash"); ind = 1;}
 		
-		vspd = -3 -(abs(hspd)/6);
+		vspd = -4 -(abs(hspd)/6);
 		if crouch and char = "Goldron" {vspd -= 2;}
-		if jumps >= 1 and char = "Dawn" {vspd += 1.5;}
+		if doubleJumped and char = "Dawn" {vspd += 1.5;}
 		state = ps.jump;
 		
 		grounded = false;
@@ -81,31 +82,57 @@ function do_jump()
 function do_fire()
 {
 	if global.abilities {
-		if firetimer <= 8 && kap && powerup = "f" && (char =  "Pokey" or char =  "Gemaplys") && instance_number(oHatThrow) < global.hats
+		if firetimer <= 8 && kap 
 		{
-			instance_create_depth(x-3,bbox_top+2,depth,oHatThrow).facing = sign(image_xscale);
-			firetimer = 10;
-			sfx(sndFireballthrown,1);
-		}
-		if firetimer <= 8 && kap && powerup = "f" && instance_number(oFireball) <= 1 && !(char =  "Pokey" or char =  "Gemaplys")
-		{
-			var fb = instance_create_depth(x-3,bbox_top+2,depth,oFireball);
+			if powerup = "h" && instance_number(oHatThrow) < global.hats
+			{
+				instance_create_depth(x-3,bbox_top+2,depth,oHatThrow).facing = sign(image_xscale);
+				firetimer = 10;
+				sfx(sndFireballthrown,1);
+			}
+			if (powerup = "f" || powerup = "sf") && instance_number(oFireball) <= 1
+			{
+				var fb = instance_create_depth(x-3,bbox_top+2,depth,oFireball);
 			
-			fb.facing = sign(image_xscale);
-			fb.m = id;
-			firetimer = 10;
-			sfx(sndFireballthrown,1);
+				fb.facing = sign(image_xscale);
+				fb.m = id;
+				firetimer = 10;
+				sfx(sndFireballthrown,1);
+			}
+			if powerup = "t" && instance_number(oFirearrow) <= 3
+			{
+				var fb = instance_create_depth(x-3,bbox_top+2,depth,oFirearrow);
+			
+				fb.facing = sign(image_xscale);
+				fb.m = id;
+				firetimer = 10;
+				sfx(sndFireballthrown,1);
+			}
 		}
 	}
-	else {
-		if firetimer = 0 && kap && powerup = "f" && instance_number(oFireball) <= 1
-		{
-			var fb = instance_create_depth(x,bbox_top+6,depth,oFireball);
-			
-			fb.facing = sign(image_xscale);
-			fb.m = id;
-			firetimer = 1;
-			sfx(sndFireballthrown,1);
+}
+
+function do_spincarp()
+{
+	if kap && powerup = "c" and spintimer <= 0 {
+		spintimer = 30;
+	}
+	
+	if spintimer > 0 {
+		spr = ms("sMario_{}_spin"); ind += 0.4;
+		if spintimer = 1 and !grounded {
+			spr = ms("sMario_{}_jump"); ind = 0
 		}
+	}
+}
+
+function do_shoulderbash()
+{
+	if khp && shoulderbash = 0 && char = "Wario" and global.abilities
+	{
+		state = ps.shoulderbash;
+		vspd = 0; hspd = 0;
+		shoulderbash = room_speed*0.5;
+		sfx(sndBoom,1);
 	}
 }

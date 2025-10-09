@@ -23,4 +23,6 @@ char = choose
 	"Walker"
 );
 
-sprite_index = asset_get_index("sRetrossona_"+char);
+spr = asset_get_index("sRetrossona_"+char);
+sprIndex = 0;
+ind = 0

@@ -34,8 +34,8 @@ if mouse_check_button(mb_left) && image_index = 0
 	image_speed = imgspd*4;
 	audio_stop_sound(sndGunshot)
 	audio_play_sound(sndGunshot,0,0,global.volsfx);
-	var xm = global.gunskin = "MiniGun"? x+8 : x
-	var ym = global.gunskin = "MiniGun"? y-2 : y
+	var xm = (global.gunskin == "MiniGun")? x+8 : x
+	var ym = (global.gunskin == "MiniGun")? y-2 : y
 	var b = instance_create_depth(xm,ym,depth,oBullet)
 	if instance_exists(b) {b.direction = mdir}
 	var bd = instance_create_depth(x,y,depth,oBulletdropped);

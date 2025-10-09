@@ -6,20 +6,17 @@ draw_set_font(global.fnt)
 
 #region DEBUG gui
 
-var cx = 0; cy = 0;//camera_get_view_x(view_camera[0]); var cy = camera_get_view_y(view_camera[0]);
+var cx = 0; var cy = 0;//camera_get_view_x(view_camera[0]); var cy = camera_get_view_y(view_camera[0]);
 var tile = 8
 
 draw_set_font(global.fnt);
 
 if string_pos("Title",room_get_name(room)) == 0 and room != rmServer and room != rmLeveltransition && global.debug = true
 {
-	
 	if !instance_exists(oClient)
 	{
 		if keyboard_check_pressed(vk_tab) and !instance_exists(oPaused)
 		{debug = !debug;}
-		
-		
 		if debug
 		{
 			var boolbox = function(b,to)
@@ -32,11 +29,8 @@ if string_pos("Title",room_get_name(room)) == 0 and room != rmServer and room !=
 			draw_rectangle_color((SCREENW-(256/2))+(tile*-1)+cx,(tile*3)+cy,(SCREENW-(256/2))+(tile*1)+cx+64,(tile*3)+cy+112,c_black,c_black,c_black,c_black,false);
 			draw_sprite(sMushsel,image_index,(SCREENW-(256/2))+4+(tile*-1)+cx,(tile*3)+(tile*debugsel)+tile+cy)
 			
-			
 			debugsel += keyboard_check_pressed(global.keyd) - keyboard_check_pressed(global.keyu)
-			debugsel = clamp(debugsel,0,8);
-			
-			
+			debugsel = clamp(debugsel,0,7);
 			
 			draw_set_font(fntComicsmall)
 			
@@ -46,10 +40,7 @@ if string_pos("Title",room_get_name(room)) == 0 and room != rmServer and room !=
 			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*4+cy,"TRIPPY"); boolbox(global.trippymode,3);
 			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*5+cy,"COMMANDER"); boolbox(global.commandenys,4);
 			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*6+cy,"ENVIRONMENT"); boolbox(-1,5);
-			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*7+cy,"EXPLODE"); boolbox(-1,6);
-			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*8+cy,"TILESET"); boolbox(-1,7);
-			if instance_exists(oMario) {
-			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*9+cy,"SCALE "+ string(oMario.scale)); boolbox(-1,8);}
+			draw_text((SCREENW-(256/2))+(tile*2)+cx,(tile*3)+tile*7+cy,"TILESET"); boolbox(-1,6);
 			
 			draw_set_font(global.fnt);
 			
@@ -62,15 +53,16 @@ if string_pos("Title",room_get_name(room)) == 0 and room != rmServer and room !=
 					case 2: global.freecam = !global.freecam; break;
 					case 3: global.trippymode = !global.trippymode; break;
 					case 4: global.commandenys = !global.commandenys; break;
-					case 5: if global.environment != e.night {global.environment++} else {global.environment = -1;} break;
-					case 6: explode(); break;
-					case 7: if global.game != gm.LL {global.game++} else {global.game = 0;} break;
+					case 5: 
+						if global.environment != e.night {global.environment++} 
+						else {global.environment = -1;} break;
+					case 6: 
+						if global.game != gm.LL {global.game++} 
+						else {global.game = -1;} 
+						
+						update_tileset();
+					break;
 				}
-			}
-			
-			var p = keyboard_check_pressed(global.keyr)-keyboard_check_pressed(global.keyl);
-			if p != 0 and debugsel = 8 {
-				oMario.scale += 0.1*p; global.scaled = true
 			}
 		}
 	}
@@ -120,6 +112,7 @@ if loadscreen > -1
 	
 	instance_deactivate_all(true)
 	instance_activate_object(oClient)
+	instance_activate_object(oServer)
 	instance_activate_object(oRacemanager)
 	instance_activate_object(oIsArena)
 	instance_activate_object(oPaused)
@@ -153,19 +146,21 @@ if instance_exists(oMario) && oMario.state = ps.die and instance_number(oMario) 
 	if diec > room_speed*4
 	{
 		diec = 0; 
-		if global.sync {instance_create_layer(oMario.xstart,oMario.ystart,"Instances",oMario);}
+		if global.sync || global.arena != 0 
+		{oMario.x = oMario.xstart; oMario.y = oMario.ystart; oMario.depth = 0; oMario.state = ps.normal; oMario.dietimer = 0;}
 		else {
 			try {
-				if !instance_exists(oCheckpointmask) && room_exists(asset_get_index("rm"+string(global.world)+"_"+string(global.level))) && room != rmExtra_under
+				if !instance_exists(oCheckpointmask) && room_exists(asset_get_index("rm"+string(global.world)+"_"+string(global.level))) && room != rmExtra_1_1_under
 				{room_goto(asset_get_index("rm"+string(global.world)+"_"+string(global.level)));} 
 				else 
 				{room_restart()}
-			} catch (bruh) {show_message("I guess the level just doesn't exist? IDK either way, back to the title screen..."); room_goto(rmTitle); if instance_exists(oClient) {disconnecttt(); oClient.alarm[3] = 20;}}
+			} catch (bruh) {show_message_async("I guess the level just doesn't exist? IDK either way, back to the title screen..."); 
+				room_goto(rmTitle); if instance_exists(oClient) {disconnecttt(); oClient.alarm[3] = 20;}}
 			if global.time != -1 
 			{setTimer();}
 		}
 	}
-	oMario.powerup = "s";
+	oMario.powerup = "s"
 	if instance_exists(oLuigi) {oLuigi.powerup = oMario.powerup}
 }
 

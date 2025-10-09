@@ -15,6 +15,6 @@ if warning > 0 {
 	warning--;
 	
 	draw_set_alpha(warning/100)
-	draw_text(24,SCREENH-16,"VARIABLES READING PROBLEMS, TRYING TO REDO IT")
+	draw_text(24,(SCREENH-16)-8,"SOME VALUES HAD TO BE IGNORED LOL.")
 	draw_set_alpha(1)
 }

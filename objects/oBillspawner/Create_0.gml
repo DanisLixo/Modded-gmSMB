@@ -4,4 +4,4 @@ bill = noone
 spawntype = 0
 start = true
 
-depth += 10
+layer = layer_get_id("Tiles_brown")

@@ -1,5 +1,21 @@
 /// @description Initialize Client
 
+if global.username = ""
+{
+	global.username = (random_range(0, 100) >= 60)? choose(
+	"All-Games Tupra",
+	"Banana", 
+	"Goku",
+	"Mario", 
+	"Luigi", 
+	"Wario",
+	"Waluigi",
+	"Maria",
+	"YourAverageSMBFan", 
+	"SampleText", 
+	"Unnamed 0") : global.clientid;
+}
+
 //Client Variables
 port = global.port;
 ip = global.ip;
@@ -8,20 +24,17 @@ warning = ""
 warntimer = 0;
 addwarn = 500
 
+global.gameReseted = false;
+global.leftGame = false;
+
 network_set_config(network_config_connect_timeout, 3000);
 client = network_create_socket(network_socket_tcp);
-network_connect_raw(client, ip, port);
-
+network_connect(client, ip, port);
 allfinished = false;
 
 //Create Our Player
 instances = ds_map_create();
-idd = 0;
-fidd = 0;
-bidd = 0;
-hidd = 0;
-Player = oMario//instance_create_layer(random(room_width), random(room_height), "Instances", oMario);
-
+Player = oPlayer
 idd = Player.my_id;
 
 ds_map_add(instances, idd, Player);
@@ -41,7 +54,7 @@ network_send_packet(client, jbuff, buffer_tell(jbuff));
 buffer_delete(jbuff);
 
 //Asking for sync
-alarm[9] = 120
+if (!instance_exists(oServer)) alarm[9] = 60;
 
 //Create the Chat
 //instance_create_layer(x, y, "Instances", oChat);
@@ -53,11 +66,13 @@ players = 1
 
 //Display error if unable to connect
 if (client < 0) {
-	show_message("could not connect to server");
+	show_message_async("could not connect to server");
 	game_restart();
 }
 
 global.warpzone = false;
-global.hardmode = false;
+global.multiplayer = false;
 
 text = ""
+
+disconnected = false;

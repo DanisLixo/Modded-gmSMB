@@ -1,7 +1,6 @@
-if !onview
-{exit;}
+event_inherited();
 
-if die = 2 && !onview()
+if state == -1 && !onview()
 {instance_destroy();}
 
 if state != -1 {
@@ -39,6 +38,3 @@ if state != -1 {
 		draw_self();
 	shader_reset()
 }
-
-if !(mario_freeze() = 0 or mario_freeze() = 4)
-{exit;}

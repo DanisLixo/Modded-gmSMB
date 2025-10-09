@@ -1,1 +1,1 @@
-if oGame.found_secret[4] == true {instance_destroy(id,false)}
+if (global.foundSecret[3]) {instance_destroy(id,false)}

@@ -6,8 +6,10 @@ if moving = false {
 	//t.text = "BUT MAYBE YOU SHOULD"
 	t.text = "AND PUSH " + keycode_to_string(global.keya) + " TO GO BACK."
 	if instance_exists(oClient) {t.text = "TO THE LOBBY.";}
+	
+	can_go = true;
 }
 
 
-alarm[5] = interval*3
+//alarm[5] = interval*3
 

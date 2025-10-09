@@ -28,11 +28,11 @@ if start >= 1
 }
 
 if image_index >= 3 and image_index < 11
-	{
-		image_index += 0.1;
-	}
+{
+	image_index += 0.1;
+}
 
-if /*instance_exists(oClient) && */showresults = false && round(image_index) >= 3
+if /*instance_exists(oClient) &&*/ !showresults && round(image_index) >= 3
 {
 	//minutes = round((round((counter) / room_speed * 1000))/60000);
 	seconds = round(counter div room_speed) mod 60;
@@ -49,15 +49,13 @@ if /*instance_exists(oClient) && */showresults = false && round(image_index) >= 
 	{
 		if !audio_is_playing(racemusic)
 		{
-			if global.musicchannels {racemusic = musRace_c0}
+			if global.musicChannels {racemusic = musRace_c0}
 			else {racemusic = musRace}
 			bgm("Race",true) 
 		}
 		if audio_sound_get_track_position(racemusic) >= 29.07
 		{audio_sound_set_track_position(racemusic,3.4);}
 	}
-
-	
 	
 	if instance_exists(oMario) && (oMario.state = ps.flagpoledescend or oMario.state = ps.castleending)
 	{showresults = true; audio_stop_sound(racemusic);}

@@ -18,8 +18,6 @@ try {
 		break;
 	}
 } catch(bruh) {
-	//show_message("Someone broke the game and sent athe server a weird buffer, the game will have to be restarted.");
-	
-	//show_error("Error: " + string(bruh), false);
+	show_message_async($"Someone broke the game and sent athe server a weird buffer.\nError: {string(bruh)}\nNothing will happen with the server though.");
 	exit;
 }

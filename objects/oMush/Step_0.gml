@@ -18,7 +18,7 @@ if mario_freeze() != 1
 
 var m = instance_place(x+8*face,y,oMario);
 
-if m && m.hspd <= 0.5 && global.moveobjs = true && m.state = ps.nah
+if m && m.hspd <= 0.5 && global.moveObjs = true && m.state = ps.nah
 {
 	face = -face
 	//x += hspd; // I like this one specifically, he simply stops the object.

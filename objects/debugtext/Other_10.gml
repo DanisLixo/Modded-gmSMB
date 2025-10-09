@@ -4,19 +4,30 @@ try {
 	ds_list_add(debuglist,"CALC IS A SLANG FOR CALCULATOR CHAT - " + string(round(SCREENW/85)));
 	ds_list_add(debuglist,"PVP - " + string(global.pvp));
 	ds_list_add(debuglist,"1UP - " + string_upper(global.hiddenoneup));
-	ds_list_add(debuglist,"CHAR - " + string_upper(global.playerName));
-	ds_list_add(debuglist,"ID - " + string_upper(global.player));
-	ds_list_add(debuglist,"CHAR P2 - " + string_upper(global.playertwoName));
-	ds_list_add(debuglist,"ID P2 - " + string_upper(global.playertwo));
+	ds_list_add(debuglist,"MUS PLYNG - " + string(bgm_is_playing(global.curbgm)));
 	
-	if instance_exists(oMario) {
+	if instance_exists(oPlayer) {
+		ds_list_add(debuglist,"CHAR - " + string_upper(global.playerName));
+		ds_list_add(debuglist,"ID - " + string_upper(global.player));
 		ds_list_add(debuglist,"HSPD - " + string(oMario.hspd));
 		ds_list_add(debuglist,"VSPD - " + string(oMario.vspd));
 		ds_list_add(debuglist,"DANCE - " + string(oMario.pepdancin));
 		ds_list_add(debuglist,"RETRO - " + string(oMario.retrochance));
 		ds_list_add(debuglist,"POLYDANC - " + string(oMario.dancechance));
 		ds_list_add(debuglist,"STATE - " + string(oMario.state));
-		ds_list_add(debuglist,"DEMO TIMER - " + string(oMario.playDemo));
+		ds_list_add(debuglist,"CODE POS - " + string(oMario.codepos));
+		ds_list_add(debuglist,"NEXT LETTER - " + oPlayer.inputlist[| oPlayer.codepos]);
+		ds_list_add(debuglist,"SPR FRAME - " + string(oPlayer.ind));
+		ds_list_add(debuglist,"SPRITE - " + string_upper(sprite_get_name(oPlayer.spr)));
+	}
+	
+	if instance_exists(oCape) {
+		ds_list_add(debuglist,"EXISTS A CAPE - " + string("YES"));
+	}
+	
+	if instance_exists(oLuigi) {
+		ds_list_add(debuglist,"CHAR P2 - " + string_upper(global.playertwoName));
+		ds_list_add(debuglist,"ID P2 - " + string_upper(global.playertwo));
 	}
 	
 	if instance_exists(oBowser) {
@@ -31,9 +42,10 @@ try {
 	}
 	
 	if instance_exists(oHammerbro) {
-		ds_list_add(debuglist,"JUMPIN - " + string(oHammerbro.jump));
-		ds_list_add(debuglist,"AGRESSIVE - " + string(oHammerbro.aightcomehere));
-		ds_list_add(debuglist,"HAMMERING - " + string(oHammerbro.hammertimer));
+		ds_list_add(debuglist,"JUMPIN - " + string(debug_nearest(oHammerbro).jumptimer));
+		ds_list_add(debuglist,"JUMPT - " + string_upper(debug_nearest(oHammerbro).jump));
+		ds_list_add(debuglist,"AGRESSIVE - " + string(debug_nearest(oHammerbro).aightcomehere));
+		ds_list_add(debuglist,"HAMMERING - " + string(debug_nearest(oHammerbro).hammertimer));
 	}
 	
 	if instance_exists(oPartner) {
@@ -71,6 +83,10 @@ try {
 	
 	if instance_exists(oRope) {
 		ds_list_add(debuglist,"ROPE SCALE - " + string(debug_nearest(oRope).image_yscale));
+	}
+	
+	if instance_exists(oSuperstarspawn) {
+		ds_list_add(debuglist,"ROPE SCALE - " + string(debug_nearest(oSuperstarspawn).sendin));
 	}
 	
 	if instance_exists(oMarioDemorunner) {
@@ -112,4 +128,4 @@ try {
 	if instance_exists(oFireball) {
 		ds_list_add(debuglist,"ARROW GROUNDS - " + string(debug_nearest(oFireball).boings));
 	}
-} catch(readerr) {warning += 100;}
+} catch(readerr) {warning = 100;}

@@ -1,4 +1,6 @@
 global.environment = e.night
-bgm("Secret2",true)
+global.curbgm = "Secret2";
 
-if oGame.found_secret[2] == false {global.secrets_found++;}
+bgm(global.curbgm,true)
+
+if (!global.foundSecret[1]) {global.secrets_found++;}

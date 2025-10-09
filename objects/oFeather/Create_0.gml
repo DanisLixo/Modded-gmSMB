@@ -10,12 +10,12 @@ pufunc = function()
 	{
 		with(m)
 		{
-			if powerup = "s"
+			if (powerup = "s" || powerup = "sf")
 			{state = ps.grow;}
-			else if powerup = "b" || powerup = "f"
-			{state = ps.capetransform;}
+			else if powerup != "c"
+			{powerup = "c"; state = ps.transform;}
 			else
-			{sfx(sndFeather,0);}
+			{sfx(sndPowerup,1);}
 		}
 	}
 	
@@ -23,10 +23,10 @@ pufunc = function()
 	{
 		with(oPlayer)
 		{
-			if powerup = "s"
+			if (powerup = "s" || powerup = "sf")
 			{state = ps.grow;}
-			else if powerup = "b" || powerup = "c"
-			{state = ps.capetransform;}
+			else if powerup != "c"
+			{powerup = "c"; state = ps.transform;}
 			else
 			{sfx(sndPowerup,1);}
 		}

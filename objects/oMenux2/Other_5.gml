@@ -1,2 +1,2 @@
-global.titleroom_selected = 0
+global.titleroomSelected = 0
 savesettings();

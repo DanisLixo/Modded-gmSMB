@@ -1,6 +1,6 @@
 function explode(switchchar = true)
 {
-	if instance_exists(oPlayer) {
+	if object_index = oPlayer {
 		var curgp = global.player
 		var bd = instance_create_depth(oPlayer.x,oPlayer.y,oPlayer.depth+1,oMariodead)
 		bd.direction = irandom(360)
@@ -9,11 +9,16 @@ function explode(switchchar = true)
 		bd.m = oPlayer;
 		bd.palind = bd.m.palindex
 		
-		var ins = instance_create_depth(oPlayer.bbox_left+2,oPlayer.bbox_top,oPlayer.depth-99999,oBLAST)
-		ins.image_xscale = 0.2
-		ins.image_yscale = 0.2
-		ins.x -= (sprite_width*0.2)/2
-		ins.y -= (sprite_height*0.2)/2
+		var ins = instance_create_depth(oPlayer.bbox_left,oPlayer.bbox_top,oPlayer.depth-99999,oBLAST)
+		ins.image_xscale = 0.6
+		ins.image_yscale = 0.6
+		ins.x -= (16*0.6)/2
+		ins.y -= (32*0.6)/2
+		
+		if switchchar {
+			global.playerID = irandom_range(0, array_length(global.charlist)-1);
+			global.player = update_player()
+		}
 		
 		if instance_exists(oClient) 
 		{
@@ -32,11 +37,8 @@ function explode(switchchar = true)
 			network_send_packet(oClient.client, buff, buffer_tell(buff));
 			buffer_delete(buff);
 		}
-						
-		oPlayer.y = -300
-		oPlayer.state = ps.exploded
 	}
-	if instance_exists(oLuigi) {
+	if object_index = oLuigi {
 		var curgp = global.playertwo
 		var bd = instance_create_depth(oLuigi.x,oLuigi.y,oLuigi.depth+1,oMariodead)
 		bd.direction = irandom(360)
@@ -45,27 +47,15 @@ function explode(switchchar = true)
 		bd.m = oLuigi;
 		bd.mario_spr = curgp;
 		
-		var ins = instance_create_depth(oLuigi.bbox_left+2,oLuigi.bbox_top,oLuigi.depth-99999,oBLAST)
-		ins.image_xscale = 0.2
-		ins.image_yscale = 0.2
-		ins.x -= (sprite_width*0.2)/2
-		ins.y -= (sprite_height*0.2)/2
-						
-		oLuigi.y = -300
-		oLuigi.state = ps.exploded
-	}
-	if switchchar {
-		var randchar = irandom_range(0,ds_list_size(global.charlist)-1);
-		global.player = global.idlist[| randchar]
-		global.playerName = global.charlist[| randchar]
+		var ins = instance_create_depth(oLuigi.bbox_left,oLuigi.bbox_top,oLuigi.depth-99999,oBLAST)
+		ins.image_xscale = 0.6
+		ins.image_yscale = 0.6
+		ins.x -= (16*0.6)/2
+		ins.y -= (32*0.6)/2
 		
-		update_playerpalette()
-		update_playerpalette(true)
-		
-		if instance_exists(oLuigi) {
-			randchar = irandom_range(0,ds_list_size(global.charlist)-1);
-			global.playertwo = global.idlist[| randchar]
-			global.playertwoName = global.charlist[| randchar]
+		if switchchar {
+			global.playertwoID = irandom_range(0, array_length(global.charlist)-1);
+			global.playertwo = update_player(global.playertwo)
 		}
 	}
 }

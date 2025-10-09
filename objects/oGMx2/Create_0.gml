@@ -12,7 +12,7 @@ addmenu = function(sec,pos,label)
 	optionsnum[sec] += 1;
 }
 
-addmenu(0,0,"EXTRA LEVEL")
+addmenu(0,0,"EXTRA LEVELS")
 addmenu(0,1,"START GAME")
 addmenu(0,2,"LEVEL SELECT")
 addmenu(0,3,"NETWORK GAME")

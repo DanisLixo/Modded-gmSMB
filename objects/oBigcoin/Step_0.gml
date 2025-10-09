@@ -8,7 +8,7 @@ if moving = true {
 
 var m = instance_place(x+8*dir,y,oMario);
 
-if m && global.movestatics = true && m.state = ps.nah
+if m && global.moveStatics = true && m.state = ps.nah
 {
 	moving = true
 	dir = -dir

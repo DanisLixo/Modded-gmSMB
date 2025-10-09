@@ -30,7 +30,7 @@ function ps_emerge()
 	if instance_exists(oBeanstalk) && instance_nearest(x,y,oBeanstalk).emerge = true
 	{exit;}
 	
-	if !place_meeting(x,y-1,oPlatformtriggerlu) && !place_meeting(x,y-1,oPlatformtriggerrd)
+	if !place_meeting(x,y-9,oPlatformtriggerlu) && !place_meeting(x,y-9,oPlatformtriggerrd)
 	{image_xscale = 1; y -= 0.8; ind += 0.14;}
 	else
 	{

@@ -1,17 +1,7 @@
 if !onview()
 {exit;}
 
-if instance_nearest(x,y,oMario).char =  "Pokey" or instance_nearest(x,y,oMario).char =  "Gemaplys" {
-shader_set(shdColorswap);
-	apply_palette(sPalette_goomba,global.environment,1)
-	draw_sprite(sFireHat,0,x,y);
-shader_reset();
-}
-
-else if instance_nearest(x,y,oMario).char = "Dawn" {
-	draw_sprite(sFirebow,0,x,y);
-}
-else if instance_nearest(x,y,oMario).char = "Max Verstappen" {
+if instance_nearest(x,y,oMario).char = "Max Verstappen" {
 	draw_sprite(sTire,0,x,y);
 }
 else if float {

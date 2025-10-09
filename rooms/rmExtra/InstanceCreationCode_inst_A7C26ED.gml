@@ -1,1 +1,0 @@
-troom = rmExtra_sky

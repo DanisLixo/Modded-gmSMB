@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "gun_sprite",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Gun",
-    "path": "folders/Objects/Addition/AppearsOnline/Gun.yy",
+  "$GMScript":"v1",
+  "%Name":"gun_sprite",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"gun_sprite",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

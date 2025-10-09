@@ -1,7 +1,7 @@
 if !instance_exists(oClient)
 {instance_destroy();}
 
-if room != myroom || !onview()
+if (room != myroom || !onview()) && string_pos("Cutscene", room_get_name(room)) == 0
 {exit;}
 
 try {
@@ -11,7 +11,7 @@ try {
 	shader_reset();
 } catch(missingspr) {
 	if !warning 
-	{show_message("Someone maybe has a skin mod installed, it is recommended that you ask him for his mod. For now, he will be appering as SUPER FUCKING MARIO\nPlayer that caused error: " + string(username)); warning = true;}
+	{show_message_async("Someone maybe has a skin mod installed, it is recommended that you ask him for his mod. For now, he will be appering as SUPER FUCKING MARIO\nPlayer that caused error: " + string(username)); warning = true;}
 	draw_sprite(superFUCKINGmario, 0, x, y)
 }
 

@@ -1,11 +1,11 @@
 if instance_exists(debugtext) {draw_self();}
 
-if powerup = "f" && (char = "Pokey" || char = "Gemaplys") and !instance_exists(oHat)
-{instance_create_depth(x,y,depth+1,oHat);}
-else if powerup != "f" 
+if powerup = "h" && !instance_exists(oHat)
+{instance_create_depth(x,y,depth+1,oHat).m = id;}
+else if powerup != "h" 
 {instance_destroy(oHat);}
 
-if powerup = "c" && mycapeative = false && state != ps.capetransform && state != ps.shrink {
+if powerup == "c" && mycapeative = false && state != ps.transform && state != ps.shrink {
 	var csp = instance_create_depth(x,y,depth+1,oCape);
 	csp.spr = cs("sCape_idle");
 	csp.m = id
@@ -13,10 +13,9 @@ if powerup = "c" && mycapeative = false && state != ps.capetransform && state !=
 }
 else if powerup != "c" {mycapeative = false;}
 
-
 //👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍
 
-if starman != 0 and char != "Max Verstappen"
+if starman != 0 && char != "Max Verstappen"
 {
 	gpu_set_fog(true,make_color_hsv((starman) mod 255,255,255),1,1);
 	if firedraw {
@@ -31,18 +30,24 @@ if starman != 0 and char != "Max Verstappen"
 		var csw = sprite_get_width(ccs); var csh = sprite_get_height(ccs); var cswsub = (csw/16)+(1*-image_xscale);
 		draw_sprite_part_ext(ccs,ind,0,csh-9,csw,9,x-(image_xscale*csw/2)-cswsub,y-8+yoff,
 		(image_xscale*scale),(image_yscale*scale),image_blend,0.5);
-	}
-	else {draw_sprite_ext(spr,ind,x,y+yoff,round(image_xscale)*scale,image_yscale*scale,image_angle,image_blend,0.5)}
+	} else 
+	{draw_sprite_ext(spr,ind,x,y+yoff,round(image_xscale)*scale,image_yscale*scale,image_angle,image_blend,0.5)}
+	
 	gpu_set_fog(false,-1,1,1);
 	
 	if starman mod 3 = 0 && starman > 120
-	{var smsfx = instance_create_depth(x,y,depth+2,oStarmanFX); smsfx.image_xscale = image_xscale; smsfx.col = make_color_hsv((starman) mod 255,255,255); smsfx.image_index = ind; smsfx.sprite_index = spr;}
+	{
+		var smsfx = instance_create_depth(x,y,depth+2,oStarmanFX); 
+		smsfx.image_xscale = image_xscale; 
+		smsfx.col = make_color_hsv((starman) mod 255,255,255); 
+		smsfx.image_index = ind; smsfx.sprite_index = spr;
+	}
 }
 
 if taunttimer == -1 
 {
 	gpu_set_fog(true,c_white,1,1);	
-		draw_sprite_ext(spr,ind,x,y+yoff,round(image_xscale)*scale,image_yscale*scale,image_angle,image_blend,1);
+	draw_sprite_ext(spr,ind,x,y+yoff,round(image_xscale)*scale,image_yscale*scale,image_angle,image_blend,1);
 	gpu_set_fog(false,-1,1,1);
 }
 
@@ -56,22 +61,20 @@ if shoulderbash > 0 && (current_time/1000) mod 5 = 0 || pepdancin > 10
 }
 
 //nes_flicker()
- 
 
-
-if powerup != "s" && crouch = false and !(char = "Sonic" && state = ps.jump) &&
-(char != "1pixelmario" && global.abilities) and char != "Pokey"
+if (powerup != "s" && powerup != "sf") && crouch = false 
+&& !(char = "Sonic" && state = ps.jump) && char != "Pokey"
 {sprite_index = sMariomask1;}
 else
 {sprite_index = sMariomask0;}
 
 if char == "1pixelmario" && global.abilities
 {
-	if powerup = "s" sprite_index = s1pixelmario_s_idle;
+	if (powerup = "s" || powerup = "sf") sprite_index = s1pixelmario_s_idle;
 	else sprite_index = s1pixelmario_b_idle;
 }
 
-if string_pos("Title",room_get_name(room)) != 0 && playDemo < room_speed*8
+if string_pos("Title",room_get_name(room)) != 0
 {
 	if instance_place(x+15, y, oParenemy) {state = ps.nah}  
 	else {state = ps.title; ind = 0;}  

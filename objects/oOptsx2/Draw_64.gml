@@ -50,8 +50,9 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			setTimer();
 		break;
 		case "LEVEL SELECT":
-			var _gr = get_string("ROOM NAME", "rm1_1");
-			if room_exists(asset_get_index(_gr))	{room_goto(asset_get_index(_gr));}
+			var _gr = get_string_async("ROOM NAME", "rm1_1");
+			_gr = asset_get_index(_gr);
+			if room_exists(_gr)	{room_goto(_gr);}
 			
 			setTimer(choose(100,200,300,400,500,1000));
 		break;
@@ -66,18 +67,18 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			sfx(sndMenuselect,0);
 		break;
 		case "USERNAME - ":
-			global.username = get_string("Insert a username",global.username)
+			global.username = get_string_async("Insert a username",global.username)
 			sfx(sndMenuselect,0);
 			savesettings()
 		break;
 		case "SET IP - ":
-			global.ip = get_string("Insert IP (of server)",global.ip)
+			global.ip = get_string_async("Insert IP (of server)",global.ip)
 			if global.ip = "" {loadsettings()}
 			sfx(sndMenuselect,0);
 			savesettings()
 		break;
 		case "SET PORT - ":
-			global.port = get_integer("Insert port (of server)",global.port)
+			global.port = get_integer_async("Insert port (of server)",global.port)
 			sfx(sndMenuselect,0);
 			try {savesettings();}
 			catch(mistake) {global.port = 0;}
@@ -106,7 +107,7 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			sfx(sndMenuselect,0);
 		break;
 		case "MAX PLAYERS - ":
-			global.maxplayers = get_integer("How many max players?",global.maxplayers)
+			global.maxplayers = get_integer_async("How many max players?",global.maxplayers)
 			try {global.maxplayers = clamp(global.maxplayers,2,50);}
 			catch(mistake) {global.maxplayers = 8;}
 			sfx(sndMenuselect,0);
@@ -158,9 +159,9 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			savesettings();
 		break;
 		case "TITLE SCREEN - ":
-			global.titleroom_selected++
-			if global.titleroom_selected > array_length(global.titlerooms) - 1
-			{global.titleroom_selected = 0;}
+			global.titleroomSelected++
+			if global.titleroomSelected > array_length(global.titlerooms) - 1
+			{global.titleroomSelected = 0;}
 			savesettings();
 		break;
 		case "TOGGLE LETTERBOX DARKEN":
@@ -169,7 +170,7 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			sfx(sndMenuselect,0);
 		break;
 		case "SOUND MODE - ":
-			global.musicchannels = !global.musicchannels;
+			global.musicChannels = !global.musicChannels;
 			savesettings();
 		break;
 		case "PLAY GANGNAM - ":
@@ -182,6 +183,14 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 		break;
 		case "WARP ZONE - ":
 			global.warpzone = !global.warpzone;
+			savesettings();
+		break;
+		case "BLOOD - ":
+			global.blood = !global.blood;
+			savesettings();
+		break;
+		case "POWER UP LOSS VISUAL - ":
+			global.pupleave = !global.pupleave;
 			savesettings();
 		break;
 		case "RESOLUTION":
@@ -242,6 +251,11 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			sel = 0;
 			sfx(sndMenuselect,0);
 		break;
+		case "MISC":
+			section = 18;
+			sel = 0;
+			sfx(sndMenuselect,0);
+		break;
 		case "PLAYER 1":
 			if section = 5 {section = 6;}
 			if section = 10 {section = 11;}
@@ -270,6 +284,7 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 			else if section = 13	{section = 2; sel = 4;}
 			else if section = 14	{section = 13; sel = 0;}
 			else if section = 15	{section = 13; sel = 1;}
+			else if section = 18	{section = 13; sel = 2;}
 			else if section = 16	{section = 8; sel = 6;}
 			else if section = 17	{section = 2; sel = 5;}
 			else					{section = 0; sel = 0;}
@@ -278,17 +293,17 @@ if keyboard_check_pressed(global.keyj) || keyboard_check_pressed(vk_enter)
 		break;
 		default:
 			if menu[# section, sel] != "BACK" and section = 16
-			{global.aspectratio = menu[# section, sel] resapply = true;}
+			{global.aspectRatio = menu[# section, sel] resapply = true;}
 			
 			if file_exists("gmsmbsave.ini")
 			{
 				ini_open("gmsmbsave.ini");
-				if global.aspectratio = ini_read_string("etc","resolution","WIDESCREEN") 
+				if global.aspectRatio = ini_read_string("etc","resolution","WIDESCREEN") 
 				{resapply = false;}
 				ini_close();
 			}
 			
-			switch (global.aspectratio) {
+			switch (global.aspectRatio) {
 				case "ORIGINAL": SCREENW = SCREENW_OG; SCREENH = SCREENH_OG; break;
 				case "WIDESCREEN": SCREENW = SCREENW_WS; SCREENH = SCREENH_OG; break;
 				case "ULTRA WIDE": SCREENW = SCREENW_UW; SCREENH = SCREENH_UW; break;

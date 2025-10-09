@@ -1,7 +1,8 @@
-if Iended >= players && endcounter == 0
+if Iended >= players && endcounter == 0 || room == rmLeveltransition
 {Iended = 0; endcounter = -1; allfinished = false;}
 
-if global.spectate {oGame.loadscreen = -1}
+if global.spectate 
+{oGame.loadscreen = -1}
 
 players = 1
 

@@ -1,1 +1,1 @@
-lowest = 0
+canjumplow = false;

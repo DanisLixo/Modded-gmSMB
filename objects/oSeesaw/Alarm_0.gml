@@ -1,4 +1,4 @@
-rope = instance_create_depth(x+sprite_width/2,limit+8,depth,oRope);
+rope = instance_create_depth(x+sprite_width/2,limit,depth,oRope);
 op = instance_create_depth(rx,ry,depth,oSeesaw_other);
 
 with (op) {

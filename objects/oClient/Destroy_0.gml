@@ -1,2 +1,0 @@
-disconnecttt()
-instance_destroy()

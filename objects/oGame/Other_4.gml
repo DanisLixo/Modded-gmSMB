@@ -15,7 +15,7 @@ if spawnx != -2 {
 	global.p2_coins -= _p2_coins_subs;
 }
 
-if global.aspectratio = "ROOM WIDTH" && !instance_exists(oClient) {
+if global.aspectRatio = "ROOM WIDTH" && !instance_exists(oClient) {
 	SCREENW = room_width;
 	camera_set_view_size(view_camera[0], SCREENW, SCREENH);
 	surface_resize(application_surface,SCREENW,SCREENH);
@@ -23,27 +23,24 @@ if global.aspectratio = "ROOM WIDTH" && !instance_exists(oClient) {
 	window_set_size(SCREENW*scrsizemult,SCREENH*scrsizemult);
 	window_center()
 }
-if instance_exists(oClient) {global.aspectratio = "WIDESCREEN"}
+if instance_exists(oClient) {global.aspectRatio = "WIDESCREEN"}
 
-if global.musicchannels {audio_group_load(classic);} else {audio_group_unload(classic);}
+if global.musicChannels {audio_group_load(classic);} else {audio_group_unload(classic);}
 
 alarm[1] = -1
 
 if global.player = "Gemaplys" {sfx(sndVineboom,4)}
 
 if global.multiplayer and instance_exists(oMario) and room != rmTitle {
-	if oMario.state = ps.exitpipeup {instance_create_depth(oMario.x,oMario.y,oMario.depth,oLuigi)}
+	if oMario.state = ps.exitpipe {instance_create_depth(oMario.x,oMario.y,oMario.depth,oLuigi)}
 	else {instance_create_depth(oMario.x+16,oMario.y,oMario.depth,oLuigi)}
 	oLuigi.state = oMario.state
 }
 
-if global.insertclient = true && !instance_exists(oClient)
-{instance_create_depth(x,y,depth,oClient); global.insertclient = false;}
-
-if instance_exists(oClient) and instance_exists(oMario) {oMario.invincible = room_speed*4;}
+if instance_exists(oClient) and instance_exists(oMario) {oMario.invincible = room_speed;}
 
 if room == global.titleroom && string_pos("Title",room_get_name(global.titleroom)) == 0
-{global.titleroom_selected = 0; savesettings();  room_goto(rmTitle_new)}
+{global.titleroomSelected = 0; savesettings();  room_goto(rmTitle_new)}
 
 triggercastleflag = false;
 diec = 0;
@@ -55,15 +52,20 @@ timeup = 0;
 if warned == 2 || room = rmLeveltransition || string_pos("Title",room_get_name(room)) != 0 
 {warned = false;}
 
-if instance_exists(oCheckpointmask) //room != rmTitle && room != rmServer && room != rmLobby && room != rmLeveltransition
+if instance_exists(oMario)
 {
-	if spawnx <= -1 && instance_exists(oMario) {spawnx = oMario.xstart;}
-	else if spawnx > -1 && instance_exists(oMario) && oMario.state != ps.exitpipeup {oMario.x = spawnx; if instance_exists(oLuigi) {oLuigi.x = spawnx+16}}
-	if spawny <= -1 && instance_exists(oMario) {spawny = oMario.ystart;}
-	else if spawny > -1 && instance_exists(oMario) && oMario.state != ps.exitpipeup {oMario.y = spawny; if instance_exists(oLuigi) {oLuigi.y = spawny}}
+	if instance_exists(oCheckpointmask) //room != rmTitle && room != rmServer && room != rmLobby && room != rmLeveltransition
+	{
+		if spawnx <= -1 {spawnx = oMario.xstart;}
+		if spawny <= -1 {spawny = oMario.ystart;}
+	}
+	else //if (room = rmTitle or room = rmServer or room = rmLobby or room = rmLeveltransition) 
+	{
+		spawnx = -1; 
+		spawny = -1; 
+		global.killenys = false;
+	}
 }
-else //if (room = rmTitle or room = rmServer or room = rmLobby or room = rmLeveltransition) 
-{spawnx = -1; spawny = -1; global.killenys = false;}
 
 if global.challenge = true and !audio_is_playing(musChallenge) {
 	global.curbgm = "Challenge"
@@ -73,10 +75,15 @@ if global.challenge = false {
 	global.retros = 0
 }
 
-if string_pos("Secret",room_get_name(room)) != 0 && found_secret[global.world] == false
-{instance_create_depth(x,y,depth,oSecrettext); found_secret[global.world] = true;} 
+if string_pos("Secret",room_get_name(room)) != 0 && !global.foundSecret[global.world - 1]
+{instance_create_depth(x,y,depth,oSecrettext); global.foundSecret[global.world - 1] = true;} 
 
 if room == rmTitle {room_goto(global.titleroom)}
 
 if global.enemiesrain && (string_pos(string(global.world)+"_"+string(global.level), room_get_name(room)) != 0 || global.extra)
 {instance_create_depth(0,0,0,oSpawner)}
+
+update_tileset();
+
+var tileLayer = layer_get_id("Tiles_brown")
+dep = layer_get_depth(tileLayer)-1

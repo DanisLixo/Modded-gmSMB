@@ -20,3 +20,5 @@ imgspd = image_speed;
 
 bboxturn = true
 c = 0;
+
+bleeding = false;

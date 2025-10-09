@@ -10,7 +10,7 @@ myroom = room;
 
 warning = false;
 
-alarm[0] = 5
+//alarm[0] = 5
 
 spr = ms("sMario_s_die")
 ind = 0

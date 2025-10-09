@@ -6,8 +6,10 @@ Then, we can read this data and assign it to whoever we need to
 
 See more below
 */
+
 try {
 	var packet = async_load[? "buffer"];
+	if (packet == undefined) {exit;}
 	buffer_seek(packet, buffer_seek_start, 0);
 
 	var PACKET_ID = buffer_read(packet, buffer_u8);
@@ -30,9 +32,9 @@ try {
 		#region Join
 		case network.join:
 			//read the ID of the player connecting
-			var player_id = buffer_read(packet, buffer_u16);
+			var _player_id= buffer_read(packet, buffer_u16);
 			var player_user = buffer_read(packet, buffer_string);
-			var find_player = ds_map_find_value(instances, player_id);
+			var find_player = ds_map_find_value(instances, _player_id);
 			players++;
 		
 			ds_list_add(global.CHAT, player_user + " joined.");	
@@ -79,11 +81,10 @@ try {
 		
 			if goto {
 				var roomtogo = asset_get_index("rm" + string(global.world) + "_" + string(global.level));
+				var extraroomtogo = asset_get_index("rmExtra_" + string(global.world) + "_" + string(global.level));
 		
 				if global.challenge {room_goto(rm1_1)}
-				else if global.extra {room_goto(rmExtra)} 
-				else if global.arena != 0
-				{room_goto(asset_get_index("rmArena_"+string(global.arena-1)));}
+				else if global.extra {room_goto(extraroomtogo)} 
 				else if room_exists(roomtogo) {room_goto(roomtogo);}
 			
 			}
@@ -109,6 +110,10 @@ try {
 			var world = buffer_read(packet,buffer_u8);
 			var level = buffer_read(packet,buffer_u8);
 			var goto = buffer_read(packet,buffer_bool);
+			var nextmusic =	buffer_read(packet, buffer_string);
+			var arenatime =	buffer_read(packet, buffer_u8);
+			
+			if arenatime < 100 {arenatime = -1;}
 	
 			global.race = race;
 			global.nextlvltimer = timer
@@ -128,20 +133,28 @@ try {
 			global.abilities = playerabs;
 			global.world = world;
 			global.level = level;
+			
 			if global.challenge 
 			{warning = "HOST STARTED CHALLENGE!"}
 			else 
 			{warning = "HOST HAS UPDATED THE SETTINGS!"}
 			if global.race || goto {
 				var roomtogo = asset_get_index("rm" + string(global.world) + "_" + string(global.level));
+				var extraroomtogo = asset_get_index("rmExtra_" + string(global.world) + "_" + string(global.level));
 		
 				if global.challenge {room_goto(rm1_1)}
-				else if global.extra {room_goto(rmExtra)} 
+				else if global.extra {room_goto(extraroomtogo)} 
 				else if global.arena != 0
-				{room_goto(asset_get_index("rmArena_"+string(global.arena-1)));}
+				{
+					if instance_exists(oIsArena) {instance_destroy(oIsArena)} 
+					global.curbgm = nextmusic; 
+					global.time = timeunits(arenatime);
+					
+					room_goto(asset_get_index("rmArena_"+string(global.arena-1)));}
 				else {room_goto(roomtogo);}
 			}
-			else if global.extra {room_goto(rmExtra)}
+			else if global.extra {var extraroomtogo = asset_get_index("rmExtra_" + string(global.world) + "_" + string(global.level)); 
+				room_goto(extraroomtogo)} 
 			else if global.arena != 0
 			{room_goto(asset_get_index("rmArena_"+string(global.arena-1)));}
 			else if global.challenge {room_goto(rm1_1)}
@@ -179,11 +192,10 @@ try {
 				
 					//display in chat that they left the game
 					ds_list_add(global.CHAT, user + " left.");
+					warntimer = addwarn;
 				}
 			} else {
-				show_message("You got disconnected from the server.")
-				alarm[3] = 60;
-				endcounter = 60;
+				game_restart();
 			}
 		break;
 		#endregion
@@ -212,7 +224,7 @@ try {
 		break;
 		case network.finished: Iended++; break;
 		
-		case network.raceplace:
+		case network.place:
 			var world = buffer_read(packet,buffer_u8);
 			var level = buffer_read(packet,buffer_u8);
 		
@@ -220,24 +232,42 @@ try {
 			global.level = level;	
 		break;
 		#endregion
+		
+		#region Disconnect
+		case network.sendarenaresult:
+			if instance_exists(oIsArena) {
+				oIsArena.alarm[2] = room_speed*10
+				oIsArena.endcounter = room_speed*10
+			} else {
+				alarm[2] = room_speed*10
+				endcounter = room_speed*10	
+			}
+			var strthing =	buffer_read(packet, buffer_string);
+			var nextmusic =	buffer_read(packet, buffer_string);
+		
+			//global.arenapos[# 0,ds_grid_height(global.arenapos)-1] = strthing;
+			//ds_grid_resize(global.arenapos,1,ds_grid_height(global.arenapos)+1)
+			global.curbgm = nextmusic;
+		break;
+		#endregion
 
 		#region Movement
 		case network.move:	//If we get the packet for movement, assign it to the correct player
-			var player_id = buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id = buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 		
-			var find_player = ds_map_find_value(instances, player_id);		//Find the instance ID of the player through the instance map
+			var find_player = ds_map_find_value(instances, _player_id);		//Find the instance ID of the player through the instance map
 		
 			//Read the rest of the data from the packet
-			var player_x =		buffer_read(packet, buffer_s16);
-			var player_y =		buffer_read(packet, buffer_s16);
+			var player_user =	buffer_read(packet, buffer_string);
+			var player_x =		buffer_read(packet, buffer_f16);
+			var player_y =		buffer_read(packet, buffer_f16);
 			var player_xscale =	buffer_read(packet, buffer_f16);
 			var player_alpha =	buffer_read(packet, buffer_f16);
 			var player_spr =	buffer_read(packet, buffer_u16);
-			var player_depth =	buffer_read(packet, buffer_u16);
+			var player_depth =	buffer_read(packet, buffer_s16);
 			var player_ind =	buffer_read(packet, buffer_u16);
 			var player_star =	buffer_read(packet, buffer_s16);
-			var player_user =	buffer_read(packet, buffer_string);
 			var player_pal =	buffer_read(packet, buffer_u8);
 			var player_palspr =	buffer_read(packet, buffer_u16);
 			var player_room =	buffer_read(packet, buffer_s8);
@@ -245,35 +275,47 @@ try {
 		
 			//If there is no player with that ID in our map, then create one and add it to the map
 			if (is_undefined(find_player)) {
-				var p = instance_create_layer(0, 0, "Instances", oOtherplayer);
-				ds_map_add(instances, player_id, p);
-			} else {	//If the player IS in the instance map, then assign them the data if their ID matches the packet's
-				if (idd != player_id) && (instance_exists(find_player)) {
-
-					//Assign this data to the correct player
-					find_player.x =				player_x;
-					find_player.y =				player_y;
-					find_player.image_xscale =	player_xscale;
-					find_player.spr =			player_spr;
-					find_player.depth =			player_depth;
-					find_player.ind =			player_ind;
-					find_player.starman =			player_star;	
-					find_player.username =		player_user;
-					find_player.palette =		player_pal;
-					find_player.palspr =		player_palspr;
-					find_player.myroom =		player_room;
-					find_player.mystars =		player_stars;
+				ds_map_add(instances, _player_id, instance_create_layer(player_x, player_y, "Instances", oOtherplayer));
 				
-					find_player.image_alpha =	player_alpha*global.onlinealpha;
-				}
+				find_player.x =				player_x;
+				find_player.y =				player_y;
+				find_player.image_xscale =	player_xscale;
+				find_player.spr =			player_spr;
+				find_player.depth =			player_depth;
+				find_player.ind =			player_ind;
+				find_player.starman =		player_star;	
+				find_player.username =		player_user;
+				find_player.palette =		player_pal;
+				find_player.palspr =		player_palspr;
+				find_player.myroom =		player_room;
+				find_player.mystars =		player_stars;
+				
+				find_player.image_alpha =	player_alpha*global.onlinealpha;
+			} else if (instance_exists(find_player)) {	
+				//If the player IS in the instance map, then assign them the data if their ID matches the packet's
+				//Assign this data to the correct player
+				find_player.x =				player_x;
+				find_player.y =				player_y;
+				find_player.image_xscale =	player_xscale;
+				find_player.spr =			player_spr;
+				find_player.depth =			player_depth;
+				find_player.ind =			player_ind;
+				find_player.starman =		player_star;	
+				find_player.username =		player_user;
+				find_player.palette =		player_pal;
+				find_player.palspr =		player_palspr;
+				find_player.myroom =		player_room;
+				find_player.mystars =		player_stars;
+				
+				find_player.image_alpha =	player_alpha*global.onlinealpha;
 			}
 		break;
 		#endregion
 	
 		#region Movement
 		case network.mgun:	//If we get the acket for movement, assign it to the correct player
-			var player_id =		buffer_read(packet, buffer_u16);	//Read the contents of the buffer IN THE ORDER IT WAS SENT
-			if player_id = global.clientid {break;}
+			var _player_id =		buffer_read(packet, buffer_u16);	//Read the contents of the buffer IN THE ORDER IT WAS SENT
+			if _player_id = global.clientid {break;}
 		
 			var player_room =	buffer_read(packet, buffer_s8);
 			if player_room != room {break;}
@@ -286,7 +328,7 @@ try {
 			var gun_ind =		buffer_read(packet, buffer_u16);
 		
 		
-			var gun_id = player_id+500
+			var gun_id = _player_id+500
 			var find_gun = ds_map_find_value(instances, gun_id);		//Find the instance ID of the player through the instance map
 			//If there is no player with that ID in our map, then create one and add it to the map
 			if (is_undefined(find_gun)) {
@@ -328,8 +370,8 @@ try {
 	
 		#region Movement
 		case network.mcape:	//If we get the packet for movement, assign it to the correct player
-			var player_id =		buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id =		buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 
 			var player_room =	buffer_read(packet, buffer_s8);
 			if player_room != room {break;}
@@ -341,7 +383,7 @@ try {
 			var cape_ind =		buffer_read(packet, buffer_u16);
 			var cape_pal =		buffer_read(packet, buffer_u8);
 		
-			var cape_id = player_id+1000
+			var cape_id = _player_id+1000
 			var find_cape = ds_map_find_value(instances, cape_id);		//Find the instance ID of the player through the instance map
 			//If there is no player with that ID in our map, then create one and add it to the map
 			if (is_undefined(find_cape)) {
@@ -386,8 +428,8 @@ try {
 			//When we get the packet of someone shooting, we need to read the data and perform a few actions
 			//First we need to get the bullet's ID before anything
 			var bullet_id =			buffer_read(packet, buffer_u16);
-			var player_id =			buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id =			buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 
 			var player_room =		buffer_read(packet, buffer_s8);
 			if player_room != room {break;}
@@ -438,8 +480,8 @@ try {
 		#region Firing
 		case network.fire:
 			var fire_id =		buffer_read(packet, buffer_u16);
-			var player_id =		buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id =		buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 
 			var player_room =	buffer_read(packet, buffer_s8);
 			if player_room != room {break;}
@@ -489,8 +531,8 @@ try {
 			//When we get the packet of someone shooting, we need to read the data and perform a few actions
 			//First we need to get the bullet's ID before anything
 			var hat_id = buffer_read(packet, buffer_u16);
-			var player_id = buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id = buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 		
 			var find_hat = ds_map_find_value(instances, hat_id);		//Find the instance ID of the player through the instance map
 		
@@ -540,8 +582,8 @@ try {
 	
 		#region Boomboxing
 		case network.boombox:
-			var player_id = buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id = buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 		
 			var bbox_xstr =		buffer_read(packet, buffer_s16);
 			var bbox_ystr =		buffer_read(packet, buffer_s16);//var fire_face =		buffer_read(packet, buffer_s8);	//If the player IS in the instance map, then assign them the data if their ID matches the packet's
@@ -551,7 +593,7 @@ try {
 				var bbox = instance_create_layer(bbox_xstr, bbox_ystr, "Instances", oBoombox);
 			
 				bbox.myroom =			player_room;
-				bbox.my_id =			player_id;
+				bbox.my_id =			_player_id;
 			
 				bbox.notyours =			true;
 				bbox.image_alpha =		global.onlinealpha;
@@ -563,8 +605,8 @@ try {
 		#endregion
 		
 		case network.explosion:
-			var player_id = buffer_read(packet, buffer_u16);
-			if player_id = global.clientid {break;}
+			var _player_id = buffer_read(packet, buffer_u16);
+			if _player_id = global.clientid {break;}
 		
 			var player_char =	buffer_read(packet, buffer_string);
 			var player_room =	buffer_read(packet, buffer_s8);
@@ -592,7 +634,6 @@ try {
 		break;
 		
 		case network.starspawn:
-			var star_facing = buffer_read(packet, buffer_s8);
 			var spawner_id = buffer_read(packet, buffer_s8);
 			var spawner_alarm = buffer_read(packet, buffer_u16);
 			
@@ -604,18 +645,37 @@ try {
 				{spawner = id;}	
 			}
 			
-			if instance_exists(spawner) {
-				var star = instance_create_layer(spawner.x, spawner.y, "Instances", oSuperstar);
-			
-				star.facing =	star_facing;
+			if instance_exists(spawner) && !instance_exists(oSuperstar) {
+				instance_create_layer(spawner.x, spawner.y, "Instances", oSuperstar);
+				
 				spawner.alarm[0] = spawner_alarm;
 			}
 		break;
+		case network.stardrop:
+			var player_stars = buffer_read(packet, buffer_u8);
+			
+			var st_xstr = buffer_read(packet, buffer_s16);
+			var st_ystr = buffer_read(packet, buffer_s16);
+			
+			var face = 1;
+			
+			for (var i = 0; i < player_stars; i++) 
+			{
+				var star = instance_create_layer(st_xstr, st_ystr-32, "Instances", oSuperstardropped);
+				star.vspd = -10;
+				star.facing = face;
+				
+				face = -face;
+			}
+		break;
+		
+		case network.arenagoal: var goal = buffer_read(packet, buffer_u8); 
+		global.goalofstars = goal; break;
 	} 
 } catch(q) {
-	//show_message("gmSMB found an network buff mistake, the game will have to be restarted.");
+	show_message_async("gmSMB found an network buff mistake, whatever happened will have to be ignored.");
 	
-	show_error("Error: " + string(q), false);
+	show_message_async("Error: " + string(q));
 	//disconnecttt();
 	
 	exit;

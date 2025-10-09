@@ -29,4 +29,5 @@ if place_meeting(bbox_left,y,oCol) && place_meeting(bbox_right,y,oCol)
 	instance_destroy()
 }
 
-if instance_place(floor(x),floor(y),oOtherplayer) {if global.pvp {instance_destroy()}}
+if instance_place(floor(x),floor(y),oOtherplayer) 
+{if global.pvp {instance_destroy()}}

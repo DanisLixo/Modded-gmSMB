@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "ps_spindash",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Scripts",
-    "path": "folders/Objects/Mario/Scripts.yy",
+  "$GMScript":"v1",
+  "%Name":"ps_spindash",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ps_spindash",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Objects/Mario/Scripts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

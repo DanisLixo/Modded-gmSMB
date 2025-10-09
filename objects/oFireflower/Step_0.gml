@@ -19,7 +19,7 @@ if moving = true
 
 var m = instance_place(x+8*g,y,oMario);
 
-if m && global.moveobjs && m.state = ps.nah
+if m && global.moveObjs && m.state = ps.nah
 {
 	if oMario.khp {sfx(sndBump,0);}
 	moving = true

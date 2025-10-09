@@ -4,7 +4,6 @@ function init()
 {
 	randomize();
 	
-	//#macro SCREENW 416 // 384 // 256
 	#macro SCREENW_WS 412
 	#macro SCREENW_OG 256
 	#macro SCREENW_UW 568
@@ -12,40 +11,40 @@ function init()
 	#macro SCREENH_UW 240 // 232 // 240 
 	#macro SCREENH_OG 232 // 232 // 240 
 	
-	if file_exists("gmsmbsave.ini")
-	{
-		ini_open("gmsmbsave.ini");
-		global.aspectratio = ini_read_string("etc","resolution","WIDESCREEN");
-	}
-	else {global.aspectratio = "WIDESCREEN";}
-	
 	globalvar SCREENW; SCREENW = SCREENW_WS;
 	globalvar SCREENH; SCREENH = SCREENH_OG;
-	switch (global.aspectratio) {
-	    case "ORIGINAL":
-	        SCREENW = SCREENW_OG
-	    break;
-	    case "WIDESCREEN":
-	        SCREENW = SCREENW_WS
-			SCREENH = SCREENH_OG
-	    break;
-	    case "ULTRA WIDE":
-	        SCREENW = SCREENW_UW
-			SCREENH = SCREENH_UW
-	    break;
-	}
 	
 	#macro TIMESEC 0.4
 	#macro FNT_SMB font_add_sprite_ext(sFont,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-+*!.:©bredi/_",0,0)
-	#macro FNT_LL font_add_sprite_ext(sFont_LL,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-+*!.:©bredi/_",0,0)
+	#macro FNT_LL font_add_sprite_ext(sFont_LL,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-+*!.:©bredi/'",0,0)
 	#macro FNT_SECRT font_add_sprite_ext(sFont_secrets,"0123456789CDEFNORSTUY!",0,0)
 	global.fnt = FNT_SMB
 	#macro VERSION "MOD 2.5"
 	
+	global.fullscreen = window_get_fullscreen();
+	#region screen
+
+	var scrsizemult = 3;
+	window_set_size(SCREENW*scrsizemult,SCREENH*scrsizemult);
+	surface_resize(application_surface,SCREENW,SCREENH);
+
+	view_xport[0] = 0;
+	view_yport[0] = 0;
+	view_wport[0] = SCREENW;
+	view_hport[0] = SCREENH;
+	//display_set_gui_size(SCREENW,SCREENH)
+		
+	#endregion
+	
 	global.score = 0;
 	global.coins = 0;
-	global.time = -1
+	global.time = -1;
 	
+	for (var i = 0; i < 7; i++) {
+	    global.foundSecret[i] = false;
+	}
+	
+	global.playerID = 0;
 	global.player = "Mario"
 	global.playerName = "Mario"
 	global.palettesprite = sPalette_mario;
@@ -54,15 +53,18 @@ function init()
 	global.p2_score = 0;
 	global.p2_coins = 0;
 	
+	global.playertwoID = 1;
 	global.playertwo = "Luigi";
-	global.playertwoName = "Luigi"
+	global.playertwoName = "Luigi";
 	global.p2_palettesprite = sPalette_luigi;
 	global.p2_paletteindex = 1;	
 	
-	global.gunskin = "Default"
+	global.gunskin = "Default";
 	
-	global.letterboxSprite = sLetterbox_Character;
-	
+	global.aspectRatioSelected = 1;
+	global.aspectRatioModes = ["ORIGINAL", "WIDESCREEN"];
+	global.aspectRatio = global.aspectRatioModes[global.aspectRatioSelected];
+
 	global.letterboxSelected = 0
 	global.letterboxDark = 0
 	global.letterboxes = [
@@ -101,12 +103,11 @@ function init()
 	{	
 		name : "CHARACTER",
 		spr : sLetterbox_Character
-	},
+	}
 	]
+	global.letterboxSprite = global.letterboxes[global.letterboxSelected].spr;
 	
-	global.titleroom = rmTitle_new;
-	
-	global.titleroom_selected = 0;
+	global.titleroomSelected = 0;
 	global.titlerooms = [
 	{	
 		name : "NEW",
@@ -119,27 +120,22 @@ function init()
 	{	
 		name : "MARIOKET",
 		room : rmTitle_MK
-	},
-	{	
-		name : "X2",
-		room : rmTitle_x2
-	},
+	}
 	]
-	
-	global.demo = false;
+	global.titleroom = global.titlerooms[global.titleroomSelected].room;
+
 	global.showfps = true;
 	global.showpfp = true;
 
-	global.ch[0] = -1 //Sound
-	global.ch[1] = -1 //Sound
-	global.ch[2] = -1 //Sound
-	global.ch[3] = -1 //Sound
-	global.ch[4] = -1 //Sound
-
-	global.sfx[0] = -1 //Sound
-	global.sfx[1] = 0; //Channel
+	global.ch = [-1, -1, -1, -1, -1] //Sound
+	global.sfx = [-1, 0] //Sound
+	global.chAllowed = [true, true, true, true];
 	
-	global.musicchannels = true
+	audio_sound_set_track_position(musSecret4, random_range(0, 15.35));
+	
+	global.curbgm = "Title"
+	global.starmanPlaying = false;
+	global.musicChannels = true
 	global.opacandastar = true
 	global.volsfx = 0.5;
 	global.volbgm = 0.5;
@@ -160,19 +156,24 @@ function init()
 	global.p2_keyj = vk_space;
 	global.p2_keyh = ord("E");
 	
+	global.menukr = vk_right//ord("D");
+	global.menukl = vk_left//ord("A");
+	global.menuku = vk_up//ord("W");
+	global.menukd = vk_down//ord("S");
+	global.menuka = ord("X")//vk_lcontrol;
+	global.menukj = ord("Z")//vk_space;
+	global.menukh = ord("C")//ord("E");
+	
+	global.menuCopyCtrls = 0;
+	
 	//global.keyrun = vk_shift;
 	
-	global.moveenys = true;
-	global.moveobjs = true;
-	global.movestatics = false;
+	global.moveEnys = true;
+	global.moveObjs = true;
+	global.moveStatics = false;
 	global.partner_active = false;
 	global.multiplayer = false;
 	global.abilities = true;
-	
-	global.ch_allowed[0] = true //Sound
-	global.ch_allowed[1] = true //Sound
-	global.ch_allowed[2] = true //Sound
-	global.ch_allowed[3] = true //Sound
 	
 	#region environment
 
@@ -197,7 +198,7 @@ function init()
 	
 	global.hiddenoneup = false;
 	global.secrets_found = 0;
-
+	
 	function tile_brownpalswap()
 	{
 		shader_set(shdColorswap)
@@ -212,7 +213,6 @@ function init()
 	{
 		shader_set(shdColorswap)
 		apply_palette(sPalette_tileblue,global.environment,1)
-		
 	}
 	function bg_palswap()
 	{
@@ -230,39 +230,13 @@ function init()
 	}
 	#endregion
 	
-	#region screen
-	
-		window_set_caption("gmSMBx2 "+VERSION);
-		
-		/*var displayw = display_get_width();
-		var displayh = display_get_height();
-		var xpos = (displayw / 2) - (SCREENW*scrsizemult)/2;
-		var ypos = (displayh / 2) - (SCREENH*scrsizemult)/2;
-		*/
-		var scrsizemult = 3;
-		window_set_size(SCREENW*scrsizemult,SCREENH*scrsizemult);
-		surface_resize(application_surface,SCREENW,SCREENH);
-
-		view_enabled = true;
-		view_visible[0] = true;
-
-		view_xport[0] = 0;
-		view_yport[0] = 0;
-		view_wport[0] = SCREENW;
-		view_hport[0] = SCREENH;
-		//display_set_gui_size(SCREENW,SCREENH)
-		
-	#endregion
-	
 	#region characters
 	
 	global.moddedSprites = ds_map_create();
 	global.moddedSounds = ds_map_create();
 	global.moddedChars = ds_map_create();
-	global.charlist = ds_list_create();
-	global.creatorlist = ds_list_create();
-	global.idlist = ds_list_create();
-	global.gunlist = ds_list_create();
+	global.charlist = []
+	global.gunlist = []
 	
 	ImportModSprites("mods\\character")
 	ImportModGSpr("mods\\gun")
@@ -270,9 +244,11 @@ function init()
 
 	addplist = function(name,creator,_id = name)
 	{
-		ds_list_add(global.charlist,name);
-		ds_list_add(global.creatorlist,creator);
-		ds_list_add(global.idlist,_id); 
+		array_push(global.charlist, {
+				name : name,
+				creator : creator,
+				id : _id
+			});
 	}
 		
 	//Characters
@@ -305,14 +281,14 @@ function init()
 
 	addplist("Martin","seven")
 	addplist("Peter","seven")
-	addplist("Vito","dawlate", "Gemaplys")
-	ImportModCharacter(working_directory + "mods\\character")
+	addplist("Vito","o            gemaplys", "Gemaplys")
+	ImportModCharacter("mods\\character")
 		
 	// Guns
 
 	addgunlist = function(name)
 	{
-		ds_list_add(global.gunlist,name);
+		array_push(global.gunlist,name);
 	}
 		
 	addgunlist("Default")
@@ -320,8 +296,13 @@ function init()
 	addgunlist("Emoji")
 	addgunlist("AppleEmoji")
 	addgunlist("MiniGun")
-	ImportModGuns(working_directory + "mods\\gun")
+	ImportModGuns("mods\\gun")
+	
+	global.gunID = 0;
 	#endregion
+	
+	global.demoCount = -1;
+	ImportDemos();
 	
 	global.debug = true;
 	
@@ -336,12 +317,29 @@ function init()
 	global.trippymode = false;
 	global.pvp = false;
 	
-	global.hardmode = false;
-	global.warpzone = false;
+	global.demo = false;
 	
-	global._1upclonebug = false //returns the mario 1 up clone bug
-	global.hatblockspambug = false //returns hat broken hitbox
-	global.enemiesrain = false
+	global.hardmode = false; //activates og game hard mode
+	global.warpzone = false; //activates warp zone
+	global.checkpoints = true; //activates checkpoints
+	
+	global._1upclonebug = false; //returns the mario 1 up clone bug
+	global.hatblockspambug = false; //returns hat broken hitbox
+	global.nouwstomp = false; //sets mario to not be able to stomp an enemy underwater
+	
+	global.spinypatch = true; //patches the way spinies are thrown
+	global.warpzoneScrollPatch = true; //patches the warp zone scroll bug
+	
+	global.rmhambro = false; //replaces hammer bros with a random enemy
+	global.enemiesrain = false; //enemies rain
+	global.enymulti = false; //killing enys multiplies them in two
+	global.doubleeny = false; //enemies are already in two
+	global.bowseronly = false; //all enemies are replaced with fake bowsers
+	
+	global.blood = false; //when shooting an enemy, he will stupidly bleed a lot
+	global.pupleave = true; //when taking hit, your powerup will leave you in a broke state
+	global.differentTransitions = true; //randomly choose between scrapped screen transitions
+	global.transitions = ["Lshapedpipe", "Installedpipe", "Pipejump", "Undergoing", "Lshapedtroll"];
 	
 	global.racepos = ds_grid_create(3,1);
 	global.nextlvltimer = 10
@@ -354,12 +352,12 @@ function init()
 	
 	global.spectate = false;
 	
-	global.ip = "12345.ddns.net"
+	global.clientid = irandom_range(0,10000);
+	global.ip = "127.0.0.1"
 	global.port = 7676;
 	global.maxplayers = 8;
-	global.username = ""
+	global.username = string(global.clientid);
 	global.insertclient = false
-	global.clientid = irandom_range(0,10000);
 	
 	global.CHAT = ds_list_create();
 	global.chatfocus = false;

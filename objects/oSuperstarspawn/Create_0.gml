@@ -1,5 +1,5 @@
-alarm[0] = room_speed*5
+alarm[0] = room_speed*irandom_range(5,12)
 
-idd = -1
+idd = irandom_range(0,50000)
 
-facer = choose(-1,1);
+sendin = 1;

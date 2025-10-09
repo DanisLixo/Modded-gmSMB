@@ -1,4 +1,6 @@
-if global.letterboxSprite = sLetterbox_Character {
+
+
+if global.letterboxSelected == 7 {
 	x -= 1;
 	y -= 1;
 

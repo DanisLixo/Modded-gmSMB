@@ -112,11 +112,17 @@ if type = 5
 	gspd = lerp(gspd,g*1.3,.02);
 	if m {
 		y += gspd
-		if m.vspd >= 0 {m.y += gspd; m.vspd = 0; m.grounded = true}
+		if m.vspd >= 0 
+		{
+			m.y += gspd; 
+			m.vspd = 0; 
+			m.grounded = true
+			with(m) {while !instance_place(x,bbox_bottom+1,oElevator) {y++;}}
+		}
 	}
 }
 
-if m && global.moveobjs && m.state = ps.nah
+if m && global.moveObjs && m.state = ps.nah
 {
 	if m.khp {sfx(sndBump,0);}
 	if m.image_xscale = 1

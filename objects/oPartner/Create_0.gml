@@ -1,6 +1,5 @@
 crouching = false
 char = "Aki"
-powerup = "s"
 
 sprite_index = ms("sMario_crouch", char);
 

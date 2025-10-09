@@ -90,8 +90,6 @@ var m2 = instance_place(x,y,oMario);
 if m1 && m1.invincible = 0 && state != -1		{m1.gethit = 1;}
 else if m2 && m2.invincible = 0 &&  state != -1	{m2.gethit = 1;}
 
-if place_meeting(x,y,oBullet) {life = 0; instance_destroy(oBullet)}
-
 if life <= 0 {if state != -1 {points(5000,true);} state = -1;}
 	
 if instance_place(x,y,oBowserfire) && instance_place(x,y,oBowserfire).clashroyale = true {instance_destroy(); instance_destroy(oBowserfire)}
@@ -122,3 +120,5 @@ if hammertimer == 1 && (state != -1 || !oMario.x > x) {
 		hammers = 6
 	}
 }
+
+if bleeding {bleed();}

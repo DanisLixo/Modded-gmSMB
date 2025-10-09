@@ -6,8 +6,12 @@
 if instance_exists(oMario) && oMario.state != ps.castleending
 {
 	if (room_height > 240) {
-		if (oMario.y > SCREENH) {y += (((SCREENH*2-SCREENH/2+8)-oCamera.y)/25);}
-		if (oMario.y < SCREENH) {y += ((SCREENH/2-oCamera.y)/25)}
+		if (room = rmSecret3) {
+			if (oMario.y > SCREENH) {y += (((SCREENH*2-SCREENH/2+8)-oCamera.y)/25);}
+			if (oMario.y < SCREENH) {y += ((SCREENH/2-oCamera.y)/25)}
+		} else {
+			y = oMario.bbox_top-48;
+		}
 	}
 	
 	if instance_exists(oLuigi) {global.freecam = true;}
@@ -92,10 +96,20 @@ if instance_exists(oMario) && oMario.state != ps.castleending
 if room_width > SCREENW
 {
 	x = clamp(x,SCREENW/2,room_width-SCREENW/2);
-
+	
+	if global.warpzoneScrollPatch 
+	&& instance_exists(oWarpobj) && instance_exists(oWarpcameralock) 
+	&& instance_exists(oMario) && oMario.x < oWarpcameralock.x
+	{
+		if oMario.y > 33 {
+			if lock == true {x = clamp(x,SCREENW/2,oWarpcameralock.x-SCREENW/2);}
+			else if x > oWarpcameralock.x-SCREENW/2 {x--;}
+			else {lock = true;}
+		} else {lock = false;}
+	}
 	if instance_exists(oAxe)
 	{x = clamp(x,SCREENW/2,oAxe.x+32-SCREENW/2);}
-	if instance_exists(oToad) and global.aspectratio = "ORIGINAL" 
+	if instance_exists(oToad) and global.aspectRatio = "ORIGINAL" 
 	{x = clamp(x,SCREENW/2,oToad.x);}
 	if instance_exists(oMario) && oMario.state = ps.castleending && (!instance_exists(oBowser) or oBowser.state = -1) && x < room_width-SCREENW/2
 	{x += 2.5;}
@@ -110,9 +124,6 @@ y = clamp(y,SCREENH/2,room_height-SCREENH/2);
 var cameraposx = x-camera_get_view_width(view_camera[0])/2;
 var cameraposy = y-camera_get_view_height(view_camera[0])/2;
 camera_set_view_pos(view_camera[0],cameraposx,cameraposy);
-
-
-
 
 /*
     for i in (0,1):

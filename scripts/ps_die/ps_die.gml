@@ -4,15 +4,36 @@ function ps_die()
 	var maxtime = 40;
 	
 	invincible = -2;
+	starman = 0;
 	
 	depth = -1000
 	
 	if dietimer = 1
 	{
-		if instance_number(oMario) < 2 {bgm("GO",false);}
-		else {sfx(musGO,4)}
+		if instance_number(oMario) < 2 && global.arena == 0
+		{
+			global.starmanPlaying = false;
+			bgm("GO",false);
+		}
+		else 
+		{sfx(sndDieShort,0)}
+		
 		if global.stars != 0 
-		{repeat(global.stars) {instance_create_depth(x,y,depth,oSuperstar).vspd = -10;}}
+		{
+			if instance_exists(oClient) 
+			{
+				var buff = buffer_create(32, buffer_grow, 1);
+				buffer_seek(buff, buffer_seek_start, 0);
+				buffer_write(buff, buffer_u8, network.stardrop);
+				buffer_write(buff, buffer_u8, global.stars);
+				buffer_write(buff, buffer_s16, round(x));
+				buffer_write(buff, buffer_s16, round(y));
+					
+				network_send_packet(oClient.client, buff, buffer_tell(buff));
+				buffer_delete(buff);
+			}
+			global.stars = 0;
+		}
 	}
 	
 	if dietimer < maxtime

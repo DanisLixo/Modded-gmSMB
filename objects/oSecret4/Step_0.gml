@@ -1,4 +1,4 @@
-if (oMario.y < -64 || oMario.y > room_height+31) && oMario.state != ps.exploded
+if (oMario.y < -64 || oMario.y > room_height+31)
 {
 	alarm[0] = 120;
 	outOfBounds = true;

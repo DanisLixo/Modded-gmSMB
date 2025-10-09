@@ -1,6 +1,10 @@
 GENERAL INFO
 
-mods go to "AppData/Local/TouchedgmSMB/mods/" due to game maker 2022 weird directory mistake
+demos can be recorded at 1-1 pressing f2, it will make appear a counter, 
+when the counter go up, you should start recording your inputs, 
+when youre done, press f2 again and restart the game (you can press f4 for that)
+if you want a specific character to have their own demo, rename the demo to "demo[CharacterName]_[number]"
+they will appear at AppData/Local/gmSMBx2/demos and they will work even if they are there
 
 custom sprites do not scale ingame yet. they should stay proportional to mario's size if they need to be any bigger for some reason
 your hitbox will always stay the same no matter the sprite size

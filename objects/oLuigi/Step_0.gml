@@ -26,18 +26,13 @@ if instance_exists(oClient) {instance_destroy(); global.multiplayer = false}
 
 char = global.playertwo
 
-if oMario.playDemo > room_speed*8
-{
-	instance_create_depth(oLuigi.x,oLuigi.bbox_top+6,oLuigi.depth-1,oBlow); instance_destroy();
-}
-
 event_inherited();
 
 //if powerup = "c" {powerup = "f"}
 
-if powerup = "s" {
+if (powerup = "s") {
 	if instance_exists(oPlayer) {
-		if oPlayer.powerup = "s" {global.hats = 0} 
+		if (oPlayer.powerup = "s") {global.hats = 0} 
 		else {global.hats = 0}
 	}
 }

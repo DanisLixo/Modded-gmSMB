@@ -8,14 +8,6 @@ switch(state)
 	case es.patrol:
 	moveshelled = false;
 	
-	if place_meeting(x+facingdir,y,oCol) && !place_meeting(x+facingdir,y,oSlope) && !collision_rectangle(bbox_left-16,bbox_top-16,bbox_right+16,bbox_bottom+16,oElevator,false,true)
-	{facingdir = -facingdir}
-	
-	var longfunction = instance_place(x+facingdir,y,oParenemy);
-	
-	if longfunction and (longfunction.state != es.die and longfunction.state != es.shellhit)
-	{longfunction.facingdir = -longfunction.facingdir; facingdir = -facingdir;}
-	
 	hspd = maxhspd*facingdir
 	
 	image_speed = imgspd
@@ -97,6 +89,14 @@ switch(state)
 		{facingdir = -facingdir;
 			if onview() {sfx(sndBump,0)}
 		}
+		if instance_place(x+facingdir,y,oParblock)
+		{
+			if instance_nearest(x,y,oParblock).blockstate != -1
+			{instance_nearest(x,y,oParblock).blockstate = 1;}
+			instance_nearest(x,y,oParblock).triggerbreak = true;
+			facingdir = -facingdir;
+			if onview() {sfx(sndBump,0)}
+		}
 		
 		hspd = 3*facingdir
 		
@@ -119,6 +119,9 @@ switch(state)
 	
 		collide();
 		
+	break;
+	case es.stomp:
+		state = es.die;
 	break;
 }
 

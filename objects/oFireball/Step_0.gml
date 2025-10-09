@@ -22,12 +22,7 @@ if instance_exists(oClient) && instance_exists(oClient.Player)
 if !instance_exists(m) {instance_destroy();}
 
 if place_meeting(x,y+1,oCol) {
-	if (m.char != "Dawn" || global.abilities = false) 
-	{vspd = -2.5;} else {
-		boings--
-		vspd *= boings;
-		if boings >= 3 {image_speed *= 2}
-	}
+	vspd = -2.5;
 }
 
 hspd = facing*4
@@ -35,9 +30,24 @@ hspd = facing*4
 collide();
 
 if place_meeting(x+facing,y,oCol) && !collision_rectangle(bbox_left-16,bbox_top-16,bbox_right+16,bbox_bottom+16,oElevator,false,true)
-{instance_destroy(); sfx(sndBump,1);}
+{instance_destroy(); sfx(sndBump,1); exit;}
+
+if instance_place(x,y,oBowser)
+{
+	instance_place(x,y,oBowser).life -= 1
+	instance_destroy();
+	exit;
+}
+
+if instance_place(x,y,oFakeBowser)
+{
+	instance_place(x,y,oFakeBowser).life -= 1
+	instance_destroy();
+	exit;
+}
+
 if instance_place(x,y,oParenemy) && instance_place(x,y,oParenemy).stomptype = 2
-{instance_destroy(); sfx(sndBump,1);}
+{instance_destroy(); sfx(sndBump,1); exit;}
 
 if instance_place(x,y,oParenemy) && instance_place(x,y,oParenemy).state != es.die && instance_place(x,y,oParenemy).state != es.stomp and instance_place(x,y,oParenemy).stomptype != 2
 {
@@ -49,6 +59,7 @@ if instance_place(x,y,oParenemy) && instance_place(x,y,oParenemy).state != es.di
 	instance_place(x,y,oParenemy).state = es.die;
 	instance_place(x,y,oParenemy).dieface = facing
 	instance_destroy();
+	exit;
 }
 if instance_place(x,y,oPiranha)
 {
@@ -56,16 +67,11 @@ if instance_place(x,y,oPiranha)
 	points(200,true)
 	instance_destroy(instance_place(x,y,oPiranha));
 	instance_destroy();
-}
-
-if instance_place(x,y,oBowser)
-{
-	instance_place(x,y,oBowser).life -= 1
-	instance_destroy();
+	exit;
 }
 
 if global.pvp and instance_place(floor(x),floor(y),oOtherplayer) 
-{instance_destroy();}
+{instance_destroy(); exit;}
 
 if !onview()
 {

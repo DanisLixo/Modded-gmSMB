@@ -4,7 +4,8 @@ if place_meeting(x,y,oMario) && collided = false
 	alarm[0] = room_speed * 1.5
 }
 
-if moving = true {x += 1}
+if moving = true 
+{x += 1}
 
 if can_go 
 {

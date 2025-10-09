@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "nes_flicker",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "unused",
-    "path": "folders/Scripts/unused.yy",
+  "$GMScript":"v1",
+  "%Name":"nes_flicker",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"nes_flicker",
+  "parent":{
+    "name":"unused",
+    "path":"folders/Scripts/unused.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

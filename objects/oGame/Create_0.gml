@@ -1,8 +1,10 @@
-init()
-loadsettings()
+init();
+loadsettings();
+resize_screen();
+
 if os_type == os_windows {instance_create_depth(x,y,depth,oNekoPresence);}
 
-global.titleroom = global.titlerooms[global.titleroom_selected];
+global.titleroom = global.titlerooms[global.titleroomSelected];
 global.letterboxSprite = global.letterboxes[global.letterboxSelected];
 
 dep = depth;
@@ -14,7 +16,7 @@ p2savedpowerup = "s";
 
 global.pind = 0
 global.p2_pind = 0
-
+global.retros = 0
 global.hats = 0;
 
 lastenv = e.underground
@@ -26,13 +28,7 @@ diec = 0;
 fireworks = 0;
 triggercastleflag = false;
 
-global.curbgm = "Title"
-
-global.retros = 0
-
 global.prevroom = -1;
-
-//alarm[0] = 3
 
 timeup = 0;
 
@@ -48,11 +44,4 @@ spawnx = -1;
 spawny = -1;
 pitch = 1
 
-found_secret[1] = false;
-found_secret[2] = false;
-found_secret[3] = false;
-found_secret[4] = false;
-found_secret[5] = false;
-found_secret[6] = false;
-found_secret[7] = false;
-found_secret[8] = false;
+fpsDebug = false;

@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "ps_swim",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Scripts",
-    "path": "folders/Objects/Mario/Scripts.yy",
+  "$GMScript":"v1",
+  "%Name":"ps_swim",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ps_swim",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Objects/Mario/Scripts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

@@ -7,7 +7,7 @@ if moving = true
 	{oMario.x += g; if oMario.x > camera_get_view_x(view_camera[0])+SCREENW/2 {oCamera.x += g;}}
 }
 
-if place_meeting(x, y-1,oMario) && global.movestatics && oMario.state = ps.nah
+if place_meeting(x, y-1,oMario) && global.moveStatics && oMario.state = ps.nah
 {
 	if oMario.khp {sfx(sndBump,0)}
 	moving = true

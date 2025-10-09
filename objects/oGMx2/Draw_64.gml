@@ -202,7 +202,7 @@ draw_set_halign(-1)
 if keyboard_check_pressed(global.keyj) or keyboard_check_pressed(vk_enter)	{ 
 	switch(menu[# section, sel])
 	{
-		case "EXTRA LEVEL":
+		case "EXTRA LEVELS":
 			room_goto(timetoparty);
 			global.time = timeunits(500)
 			global.extra = true;
@@ -214,7 +214,7 @@ if keyboard_check_pressed(global.keyj) or keyboard_check_pressed(vk_enter)	{
 			global.level = 1 
 		break;
 		case "LEVEL SELECT":
-			var _gr = get_string("ROOM NAME", "rm1_1");
+			var _gr = get_string_async("ROOM NAME", "rm1_1");
 			if room_exists(asset_get_index(_gr))	{room_goto(asset_get_index(_gr));}
 			global.time = timeunits(400)
 		break;
@@ -230,7 +230,7 @@ if keyboard_check_pressed(global.keyj) or keyboard_check_pressed(vk_enter)	{
 			sfx(sndMenuselect,0);
 		break;
 		case "MAX PLAYERS - ":
-			global.maxplayers = get_integer("How many max players?",global.maxplayers)
+			global.maxplayers = get_integer_async("How many max players?",global.maxplayers)
 			try {global.maxplayers = clamp(global.maxplayers,2,50);}
 			catch(mistake) {global.maxplayers = 2;}
 			sfx(sndMenuselect,0);
@@ -253,18 +253,18 @@ if keyboard_check_pressed(global.keyj) or keyboard_check_pressed(vk_enter)	{
 			global.level = 0;
 		break;
 		case "USERNAME - ":
-			global.username = get_string("Insert a username",global.username)
+			global.username = get_string_async("Insert a username",global.username)
 			sfx(sndMenuselect,0);
 			savesettings()
 		break;
 		case "SET IP - ":
-			global.ip = get_string("Insert IP (of server)",global.ip)
+			global.ip = get_string_async("Insert IP (of server)",global.ip)
 			if global.ip = "" {loadsettings()}
 			sfx(sndMenuselect,0);
 			savesettings()
 		break;
 		case "SET PORT - ":
-			global.port = get_integer("Insert port (of server)",global.port)
+			global.port = get_integer_async("Insert port (of server)",global.port)
 			sfx(sndMenuselect,0);
 			try {savesettings();}
 			catch(mistake) {global.port = 7676;}

@@ -4,5 +4,7 @@ else	{var t = instance_create_depth(camera_get_view_x(view_camera[0])+SCREENW/2,
 t.text = "THANK YOU "+string_upper(global.player)+"!";
 if global.player = "Dawn" {t.text = "GOOD ONE DAWN!";}
 if global.world = 1 and global.player = "Max Verstappen" {t.text = "MAX VERSTAPPEN CAREER UNTIL NOW";}
+if global.multiplayer && instance_exists(oLuigi) 
+{t.text = "THANK YOU "+string_upper(global.playerName)+ "AND"+string_upper(global.playertwoName)+"!";}
 
 alarm[1] = interval

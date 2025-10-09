@@ -1,6 +1,5 @@
 if moving = true and point_streak < 3 {
-	vspd -= 0.2
-	
+	vspd -= 0.2;
 	y += vspd;
 }
 
@@ -12,6 +11,6 @@ if mt {
 		m = mt;
 		bub_ind += 0.3
 		play_animation = true;
-		alarm[0] = 1; sfx(snd1UP,0)
+		alarm[0] = 1; sfx(snd1UP,0);
 	}
 }

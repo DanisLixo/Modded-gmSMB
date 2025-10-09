@@ -1,5 +1,8 @@
 collidecode = false;
 
+if (state != ps.die) 
+{player_collision();}
+
 if global.environment = e.underwater {
 	bubble--;
 	
@@ -16,18 +19,31 @@ if instance_place(x+hspd,bbox_bottom-1+vspd,oParblock) && shoulderbash > 0
 		var block = instance_place(x+hspd,bbox_bottom-1+vspd,oParblock)
 				
 		if block && block.blockstate = 0
-		{block.blockstate = 1; if powerup != "s" {block.triggerbreak = true;}}
+		{block.blockstate = 1; if (powerup != "s" && powerup != "sf") {block.triggerbreak = true;}}
 		if block && !place_meeting(x,y,block)
 		{sfx(sndBump,1);}
 	}
 }
-if starman > 120 && !bgm_is_playing("Starman")
+if starman > 120 && !global.starmanPlaying
 {
+	global.starmanPlaying = true;
 	bgm("Starman",true);
 }
-if starman = 120
-{audio_stop_all(); bgm(global.curbgm,true);}
-if starman == 1 {instance_create_depth(x,y,depth,oPudestroy).sprite_index = sSuperstar;}
+if starman == 120
+{
+	global.starmanPlaying = false;
+	
+	audio_stop_all(); bgm(global.curbgm,true);
+	var puvisual = instance_create_depth(x,y,depth,oPudestroy);
+	if instance_exists(puvisual) {puvisual.sprite_index = sSuperstar_dying}
+}
+
+if starman < 130 && char = "Max Verstappen" && global.abilities 
+{starman = global.time;}
+if char = "Max Verstappen" && 
+(state = ps.castleending || state = ps.flagpoledescend || state = ps.flagpolefinish || state = ps.die) 
+&& global.abilities
+{starman = 0}
 
 var h = hspd > 0? 8 : -8
 if instance_place(x+hspd+h,bbox_bottom-1+vspd,oParblock) && spintimer > 0
@@ -37,7 +53,7 @@ if instance_place(x+hspd+h,bbox_bottom-1+vspd,oParblock) && spintimer > 0
 		var block = instance_place(x+hspd,bbox_bottom-1+vspd,oParblock)
 				
 		if block && block.blockstate = 0
-		{block.blockstate = 1; if powerup != "s" {block.triggerbreak = true;}}
+		{block.blockstate = 1; if (powerup != "s" && powerup != "sf") {block.triggerbreak = true;}}
 		if block && !place_meeting(x,y,block)
 		{sfx(sndBump,1);}
 	}
@@ -49,20 +65,16 @@ if y > room_height+32 && state != ps.emerge && state != ps.jumpcut {
 	else {state = ps.die;}
 }
 
-
-if gethit
+if (gethit)
 {
 	if !instance_place(x,y,other) 
 	{
 		if invincible = 0
 		{
 			invincible = room_speed*3
-			if powerup = "s"
+			if (powerup = "s")
 			{state = ps.die;}
-			else
-			{
-				state = ps.shrink; invincible = room_speed*4;
-			}
+			else {state = ps.shrink; invincible = room_speed*4;}
 		}
 	}
 	else if invincible <= 1 {invincible = 2;}
@@ -103,7 +115,7 @@ if global.abilities {
 
 if invincible > 0
 {invincible --; image_alpha = sign(invincible mod 2);}
-if  invincible < 0
+if invincible < 0
 {invincible ++;}
 
 if starman > 0
@@ -132,13 +144,6 @@ if kd and instance_place(x,y,oMario) and instance_place(x,y,oMario).powerup = "f
 	insidecar = true;
 }
 
-if insidecar {
-	x = oLuigi.x
-	y = oLuigi.y
-	image_alpha = 0;
-	invincible = 10
-}
-
 switch(state)
 {
 	case ps.normal:
@@ -153,20 +158,20 @@ switch(state)
 	case ps.die:
 		ps_die();
 	break;
-	case ps.enterpipedown:
-		ps_enterpipedown();
+	case ps.enterpipe:
+		ps_enterpipe();
 	break;
-	case ps.enterpiperight:
-		ps_enterpiperight();
-	break;
-	case ps.exitpipeup:
-		ps_exitpipeup();
+	case ps.exitpipe:
+		ps_exitpipe();
 	break;
 	case ps.crouch:
 		ps_crouch();
 	break;
 	case ps.grow:
 		ps_grow();
+	break;
+	case ps.transform:
+		ps_transform();
 	break;
 	case ps.shrink:
 		ps_shrink();
@@ -176,12 +181,6 @@ switch(state)
 	break;
 	case ps.flagpolefinish:
 		ps_flagpolefinish();
-	break;
-	case ps.firetransform:
-		ps_firetransform();
-	break;
-	case ps.capetransform:
-		ps_capetransform();
 	break;
 	case ps.castleending:
 		ps_castleending();
@@ -219,32 +218,24 @@ switch(state)
 	case ps.sneeze:
 		ps_sneeze();
 	break;
-	case ps.exploded:
-		ps_exploded();
-	break;
 	case ps.taunt:
 		ps_taunt();
 	break;
 	case ps.dancepep:
 		ps_dancepep();
 	break;
+	case ps.title:
+		ps_title();
+	break;
 	case ps.jumpcut:
-		spr = ms("sMario_{}_jump"); 
-		
-		collidecode = true;
-		grounded = false;
-		vspd += 0.3
-		
-		x += hspd
-		y += vspd
-		if instance_place(x,bbox_bottom+vspd,oCol) 
-		{state = ps.normal;}
+		ps_jumpcut();
 	break;
 	case -1:
 		player_collision();
-		exit;
-	break;
-	default: spr = ms("sMario_{}_idle");  exit; break;
+	exit;
+	default: 
+		spr = ms("sMario_{}_idle");
+	exit;
 }
 
 if global.rtxmode = true or global.schutmode = true
@@ -255,15 +246,7 @@ if global.rtxmode = true or global.schutmode = true
 	{image_xscale = -1;}
 }
 
-if kjp {retrochance = random(100)}
-
-if starman < 130 and char = "Max Verstappen" and global.abilities {starman = global.time;}
-if char = "Max Verstappen" and (state = ps.castleending or state = ps.flagpoledescend or state = ps.flagpolefinish) and global.abilities
-{starman = 0}
-
 var sneeze = random_range(0, 100)
 if sneeze > 70 and char = "Feathy" and 
 instance_place(x+8*sign(hspd),y,oFireflower) and global.abilities
 {hspd = 2; state = ps.sneeze; oFireflower.feathy = id}
-
-//if (state != ps.die) {player_collision();}

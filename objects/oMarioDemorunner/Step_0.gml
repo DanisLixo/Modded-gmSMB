@@ -3,6 +3,7 @@ if state != ps.die {
 	if hspd < savedhspd {hspd += 0.08}
 	
 	collide();
+	player_collision();
 	
 	if place_meeting(x,y-4,oCol) && vspd < 0
 	{
@@ -17,7 +18,7 @@ if state != ps.die {
 		}
 			
 		if !place_meeting(x,bbox_bottom+1,oCol)
-		{vspd = 1; swimmin = 0}
+		{vspd = 1;}
 	}
 	
 	if !grounded
@@ -29,28 +30,35 @@ if state != ps.die {
 	if x >= room_width + 64
 	instance_destroy()
 	
-	if (instance_place(x+hspd+16, y, oCol) 
-	|| instance_place(x+hspd+16, y, oParenemy) 
-	|| !instance_place(x+hspd+32, room_height-8, oCol))
+	if (instance_place(x+hspd+32, y, oCol) || instance_place(x+hspd+16, y, oCol) 
+	|| instance_place(x+hspd+32, y, oParenemy) 
+	|| !instance_place(x+hspd+32, room_height-16, oCol))
 	&& grounded 
-	{if vspd >= 0 && onview() {sfx(jumpSnd,1);} vspd = -16 - (abs(hspd)/6);}
-} else{
+	{
+		if vspd >= 0 && onview() {sfx(jumpSnd,1);} 
+		vspd = -8 - (abs(hspd)/6);
+	}
+} else {
 	x += hspd
 	y += vspd
+	
 	dietimer++
 	sprite_index = ms("sMario_s_die", char)
+	
 	if dietimer < 40
 	{hspd = 0; vspd = 0;}
 	if dietimer = 40
 	{vspd = -4.5;}
 	if dietimer > 40
 	{vspd += 0.2;}
+	
 	if y >= room_height + 64
-		instance_destroy()
+	{instance_destroy()}
 }
 
 if instance_exists(oMario) && oMario.x > 2480 && !onview()
 {instance_destroy();}
+
 image_index = index
 
 image_xscale = scale

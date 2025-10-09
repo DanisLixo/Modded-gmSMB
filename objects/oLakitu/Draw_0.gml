@@ -1,3 +1,5 @@
+event_inherited();
+
 if !onview() and goin = false {
 	if goaway = true {instance_destroy();}
 	else {exit;}

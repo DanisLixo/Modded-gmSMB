@@ -4,18 +4,10 @@ if !onview()
 if instance_exists(oMario) {
 	var m_char = instance_nearest(x,y,oMario).char
 
-	if m_char == "Sonic" 
-	{
-		if global.environment = e.underwater
-		{sprite_index = sRingunderwater;}
-		else
-		{sprite_index = sRing;}
-	} else {
-		if global.environment = e.underwater
-		{sprite_index = sCoinunderwater;}
-		else
-		{sprite_index = sCoin;}
-	}
+	if global.environment = e.underwater
+	{sprite_index = custom_sprite(sCoinunderwater, m_char);}
+	else
+	{sprite_index = custom_sprite(sCoin, m_char);}
 }
 
 shader_set(shdColorswap);

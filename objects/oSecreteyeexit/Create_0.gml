@@ -3,8 +3,8 @@ teleported = false;
 image_alpha = 0
 depth = oMario.depth+10
 
-alarm[0] = 1
+mScale = 1;
 
-savedscale = oMario.scale
+alarm[0] = 1
 
 destroytimer = -1

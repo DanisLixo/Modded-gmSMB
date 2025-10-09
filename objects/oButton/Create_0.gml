@@ -1,4 +1,5 @@
 button = global.keyl
+button2 = noone
 image_alpha = 0.5
 depth = -10001;
 

@@ -2,9 +2,11 @@ if teleporting
 {
 	oMario.x = x
 	oMario.y = y
-	oMario.scale = 0
+	oMario.image_alpha = 0;
 	timer--
 	global.time++
+	
+	mScale -= (mScale > 0)? 0.025 : 0;
 }
 
 if image_index >= 8 && !idle 

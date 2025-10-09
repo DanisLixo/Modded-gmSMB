@@ -16,9 +16,10 @@ if x < cx+SCREENW and x > cx && state == es.patrol
 	else {image_index = 0;}
 	if eggtimer = 1 {eggtimer += choose(0,0,0,round(irandom_range(5,9)))}
 	if eggtimer = 0 {
-		var spiny = instance_create_depth(x,y,depth,oSpiny);
+		var spiny = instance_create_depth(x,y,depth,prop);
 		spiny.vspd = -4
-		spiny.eggd = -1 
+		if global.spinypatch {spiny.hspd = sign(x-m.x)*m.hspd+irandom_range(-2,2)/2;}
+		if prop == spiny {spiny.eggd = -1;}
 		eggtimer = 180
 	}
 }
@@ -31,7 +32,7 @@ if state = es.patrol {
 			{maxhspd = 0.8; facingdir = 1;}
 			else if x > cx + SCREENW - (SCREENW/6)
 			{maxhspd = -0.8; facingdir = -1;}
-			else if m.hspd > 1.65
+			else if m.hspd > 2
 			{maxhspd = m.hspd+0.2;}
 			else if x < m.x+16 and x > m.x-16
 			{hspd = 1.2*sign(maxhspd);}

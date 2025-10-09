@@ -1,5 +1,5 @@
 /// @self
-/// @description Use for mimic NES sprite limitations, for some reason, it is applied for amount of enemies, not pixels. It goes unused.
+/// @description I got no idea what this is, prob mimic NES draw sprite limitation. It goes unused tho.
 
 function nes_flicker()
 {

@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "sprite_getpixel",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "SpriteData",
-    "path": "folders/Scripts/SpriteData.yy",
+  "$GMScript":"v1",
+  "%Name":"sprite_getpixel",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"sprite_getpixel",
+  "parent":{
+    "name":"Functions",
+    "path":"folders/Functions.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

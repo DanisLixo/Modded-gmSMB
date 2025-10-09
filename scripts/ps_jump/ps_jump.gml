@@ -1,45 +1,46 @@
 function ps_jump()
 {
-	if global.environment = e.underwater and char != "Sonic"
+	retrochance = random(100);
+	
+	if global.environment = e.underwater and (char != "Sonic" || char == "Sonic" && !global.abilities)
 	{state = ps.swim;}
-	else if char = "Sonic" and global.abilities {do_jump()}
-	else if global.environment = e.underwater and !global.abilities {state = ps.swim;}
+	else {do_jump()}
 	
-	if char = "Dawn" and global.environment != e.underwater and jumps < 1 and global.abilities
-	{if kjp {jumps++} do_jump()}
-	
-	if char = "Feathy" and global.environment != e.underwater and pmach >= 6 and powerup = "c" and holdjump > 0 and global.abilities
-	{state = ps.fly; holdjump = 30;}
+	if char = "Dawn" and global.environment != e.underwater and !doubleJumped and global.abilities
+	{
+		do_jump();
+	}
 	
 	var moveh = kr-kl
 
 	var accel = 0.05
 	var maxhspd = 1.5
 		
-	if ka && releasedrunmidjump = false
-		{maxhspd = 3;}
+	if ka && releasedrunmidjump = false 
+	{maxhspd = 3;}
 		
-	if char = "Sonic" and global.environment != e.underwater and global.abilities {accel = 0.05; maxhspd = 3;}
+	if char = "Sonic" and global.environment != e.underwater and global.abilities 
+	{accel = 0.05; maxhspd = 3;}
 		
 	if moveh = 1 && hspd < maxhspd
-		{
-			hspd += accel;
-			if !ka && hspd > maxhspd
-			{hspd -= accel}
-		}
+	{
+		hspd += accel;
+		if !ka && hspd > maxhspd
+		{hspd -= accel}
+	}
 	if moveh = -1 && hspd > -maxhspd
-		{
-			hspd -= accel;
-			if !ka && hspd < -maxhspd
-			{hspd += accel}
-		}
-	
+	{
+		hspd -= accel;
+		if !ka && hspd < -maxhspd
+		{hspd += accel}
+	}
 	
 	if kar && releasedrunmidjump = false
 	{releasedrunmidjump = true;}
 	
 	if grounded
 	{
+		doubleJumped = false;
 		pmet = 0;
 		shoulderbash = -10;
 		if kd
@@ -50,26 +51,25 @@ function ps_jump()
 	
 	if holdjump >= 0
 	{
-		holdjump --
+		holdjump --;
 		
-		vspd -= (holdjump/58)
+		vspd -= (holdjump/64)
 		
-		if !kj
-		{holdjump = -1;}
-		if vspd > 0
+		if !kj || vspd > 0
 		{holdjump = -1;}
 	}
 	
 	if char = "Luigi" and global.abilities && !crouch
-	{vspd -= 0.1;}
+	{vspd -= 0.075;}
 	
-	if kj and powerup = "c" and sign(vspd) = 1 {vspd -= vspd/10}
+	if kj and powerup = "c" and sign(vspd) = 1 
+	{vspd -= vspd/10}
 
 	if global.abilities {do_spincarp();}
 	if !crouch {do_fire();}
 	
-	if char = "Luigi" || char = "Sonic" {ind += 0.4;}
-	else if char = "Martin" {ind += 0.3;}
+	if char = "Sonic" {ind += 0.4;}
+	else if char = "Luigi" || char = "Martin" {ind += 0.3;}
 	else {
 		if spr != ms("sMario_{}_walk") {
 			if sprite_get_number(spr) == 1
@@ -81,24 +81,24 @@ function ps_jump()
 	
 	collide();
 	
-	if (vspd >= 0) && !grounded && !crouch && !place_meeting(x,y,oBeanstalk) 
-	&& sprite_exists(ms("sMario_{}_fall"))
+	if char = "Feathy" and global.environment != e.underwater 
+	and pmach >= 6 and powerup = "c" and holdjump > 0 and global.abilities
 	{
-		if spr != ms("sMario_{}_jumpretro")
-		{spr = ms("sMario_{}_fall"); ind += 0.4;}
+		state = ps.fly; 
+		holdjump = 30;
+		vspd = clamp(vspd,-2,6);
 	}
+	
+	if (vspd >= 0) && !grounded && !crouch && !place_meeting(x,y,oBeanstalk) 
+	&& sprite_exists(ms("sMario_{}_fall")) && spr != ms("sMario_{}_jumpretro") 
+	{spr = ms("sMario_{}_fall"); ind += 0.1;}
 	
 	if char == "Dawn" { 
-		if retrochance >= 90 and powerup = "s" 
-		{spr = ms("sMario_s_jumpretro");}
-		if !crouch && vspd < 0 and jumps >= 1
-		{spr = ms("sMario_{}_jumpdouble"); ind += 0.4;}
+		if retrochance >= 90 and (powerup = "s" || powerup = "sf") {spr = ms("sMario_s_jumpretro");}
+		if !crouch && vspd < 0 and doubleJumped {spr = ms("sMario_{}_jumpdouble"); ind += 0.1;}
 	}
-	
-	if char = "Feathy" and !crouch {
-		if spintimer > 0 {ind += 0.3}
-		if pmach >= 6 and spintimer <= 0 {spr = ms("sMario_{}_runjump");}
-	}
+	if !crouch && pmach >= 6 and spintimer <= 0 && sprite_exists(ms("sMario_{}_runjump"))
+	{spr = ms("sMario_{}_runjump");}
 	if char = "Sonic" {
 		spr = ms("sMario_{}_spinjump");
 	}

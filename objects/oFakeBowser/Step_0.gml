@@ -1,4 +1,4 @@
-if !(mario_freeze() = 0 or mario_freeze() = 4) || oMario.x < xstart-16*96
+if !(mario_freeze() = 0 or mario_freeze() = 4)
 {exit;}
 
 if die = -1 
@@ -28,9 +28,12 @@ if instance_exists(oMario) && die = false
 {
 	if oMario.x > x && firetimer = 0
 	{
-		image_xscale = -abs(image_xscale);
+		if image_xscale > 0 {
+			image_xscale = -abs(image_xscale);
+			x += 8;
+		}
 		
-		hspd = 0;
+		hspd = 0.5;
 		if instance_exists(oAxe)
 		{
 			if x < oAxe.bbox_left-16 && !place_meeting(x+1,y,oCol)
@@ -42,7 +45,10 @@ if instance_exists(oMario) && die = false
 	}
 	else
 	{
-		image_xscale = abs(image_xscale);
+		if image_xscale < 0 {
+			image_xscale = abs(image_xscale);
+			x -= 8;
+		}
 
 		c ++;
 	
@@ -65,7 +71,7 @@ if instance_exists(oMario) && die = false
 
 if x <= xstart-(16*4) && hspd < 0
 {hspd = abs(mspd);}
-if instance_exists(oAxe) && x >= oAxe.bbox_left-16 && hspd > 0
+if x >= xstart+(16*2) && hspd > 0
 {hspd = -abs(mspd);}
 
 if die = true && state != -1
@@ -88,8 +94,6 @@ else if m2 && m2.invincible = 0 &&  state != -1	{m2.gethit = 1;}
 if place_meeting(x,y,oBullet) {life = 0; instance_destroy(oBullet)}
 
 if life <= 0 {if state != -1 {points(5000,true);} state = -1;}
-	
-if instance_place(x,y,oBowserfire) && instance_place(x,y,oBowserfire).clashroyale = true {instance_destroy(); instance_destroy(oBowserfire)}
 
 if die != false
 {firetimer = -1; hammertimer = -1;}
@@ -97,7 +101,7 @@ if die != false
 if spit == 0 {hammertimer = -1;}
 if spit == 1 {firetimer = -1;}
 
-if firetimer > 0 
+if firetimer > 0 && onview()
 {firetimer --;}
 if hammertimer > 0 && onview()
 {hammertimer --;}

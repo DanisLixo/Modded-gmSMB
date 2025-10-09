@@ -26,7 +26,7 @@ if m
 	m.gethit = 1;
 }
 
-if global.moveobjs && oMario.state = ps.nah
+if global.moveObjs && oMario.state = ps.nah
 {
 	if oMario.khp {sfx(sndBump,0)}
 	if oMario.image_xscale = 1

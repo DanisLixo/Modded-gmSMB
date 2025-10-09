@@ -1,1 +1,2 @@
-oMario.invincible = room_speed*3
+if global.arena == 0 
+{instance_destroy();}

@@ -1,24 +1,19 @@
 var cx = camera_get_view_x(view_camera[0]);
 var cy = camera_get_view_y(view_camera[0]);
 
-
 draw_set_font(global.fnt)
 
 var p = sMario_s_idle
-if sprite_exists(ms("sMario_s_idle")) && oGame.savedpowerup = "s"
-{p = ms("sMario_s_idle");}
-else if sprite_exists(ms("sMario_b_idle")) && oGame.savedpowerup = "b" || oGame.savedpowerup = "f" || oGame.savedpowerup = "c"
-{p = ms("sMario_b_idle");}
+if sprite_exists(ms("sMario_{}_idle"))
+{p = ms("sMario_{}_idle");}
 
 var scale = 1;
 if p = sPeterGriffin {scale = 0.5;}
 if p = sDuke {scale = 0.5;}
 if p = sPokey {scale = 0.4;}
-if p = sMax_Verstappen_s_idle {scale = 0.2;}
-if p = sMax_Verstappen_b_idle {scale = 0.2;}
+if p = sMaxVerstappen_s_idle {scale = 0.2;}
 if p = sPeppino {scale = 0.2;}
 if p = sPokey && oGame.savedpowerup = "s" {scale = 0.2;}
-if p = sAnton && oGame.savedpowerup = "s" {scale = 0.6;}
 
 var fire = (oGame.savedpowerup = "f")? 2 : global.paletteindex
 
@@ -29,17 +24,14 @@ shader_reset();
 
 if global.multiplayer {
 var p2 = sLuigi_s_idle
-if sprite_exists(ms("sMario_s_idle", global.playertwo)) && oGame.p2savedpowerup = "s"
-{p2 = ms("sMario_s_idle", global.playertwo);}
-else if sprite_exists(ms("sMario_b_idle", global.playertwo)) && oGame.p2savedpowerup = "b" || oGame.p2savedpowerup = "f" || oGame.p2savedpowerup = "c"
-{p2 = ms("sMario_b_idle", global.playertwo);}
+if sprite_exists(ms("sMario_{}_idle", global.playertwo))
+{p2 = ms("sMario_{}_idle", global.playertwo);}
 
 var scalep2 = 1;
 if p2 = sPeterGriffin {scalep2 = 0.5;}
 if p2 = sDuke {scalep2 = 0.5;}
 if p2 = sPokey {scalep2 = 0.4;}
-if p2 = sMax_Verstappen_s_idle {scalep2 = 0.2;}
-if p2 = sMax_Verstappen_b_idle {scalep2 = 0.2;}
+if p2 = sMaxVerstappen_s_idle {scalep2 = 0.2;}
 if p2 = sPokey && oGame.p2savedpowerup = "s" {scalep2 = 0.2;}
 if p2 = sAnton && oGame.p2savedpowerup = "s" {scalep2 = 0.6;}
 
@@ -56,6 +48,7 @@ draw_set_font(global.fnt)
 
 
 if global.extra {draw_text(11*8-cx,9*8-cy,"WORLD EXTRA");}
+else if global.player = "Gemaplys" {draw_text(11*8-cx,9*8-cy,"PELOTAS "+string(global.world)+"-"+string(global.level));}
 else {draw_text(11*8-cx,9*8-cy,"WORLD "+string(global.world)+"-"+string(global.level));}
 draw_text((15*8)-cx,(14*8)-cy,"* -1");
 if oGame.savedpowerup = "f" && global.player != "Pokey" {draw_text((9.5*8)-cx,(10*8)-cy,"U FIRE YEAH!!!")}

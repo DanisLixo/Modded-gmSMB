@@ -1,5 +1,5 @@
 //👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍👍
-if powerup = "f"
+if powerup = "f" || powerup = "sf"
 {
 	if global.p2_paletteindex = 2 {palindex = 1;}
 	else {palindex = 2;}
@@ -12,7 +12,7 @@ apply_palette(global.p2_palettesprite,palindex,image_alpha)
 
 #region fire sprite check
 
-var spritestring = "sMario_{}_fire";
+var spritestring = "sMario_b_fire";
 var pu = powerup;
 if (pu = "f" || pu = "c")
 {pu = "b";}
@@ -30,14 +30,14 @@ if firetimer > 0
 		{
 			firedraw = true;
 			
-			var fs = ms("sMario_{}_fire")
+			var fs = sprite_exists(ms("sMario_{}_fire"))? ms("sMario_{}_fire") : ms("sMario_b_fire")
 			var fsw = sprite_get_width(fs); var fsh = sprite_get_height(fs);
 			draw_sprite_part_ext(fs,ind,0,0,fsw,fsh-8,x-(image_xscale*fsw/2),y-fsh+yoff,
 			(image_xscale*scale),(image_yscale*scale),image_blend,image_alpha);
 		
 			var ccs = spr
 			if spr = ms("sMario_{}_idle")
-			{ccs = ms("sMario_{}_fire");}
+			{ccs = sprite_exists(ms("sMario_{}_fire"))? ms("sMario_{}_fire") : ms("sMario_b_fire");}
 			var csw = sprite_get_width(ccs); var csh = sprite_get_height(ccs); var cswsub = csw/16;
 			draw_sprite_part_ext(ccs,ind,0,csh-9,csw,9,x-(image_xscale*csw/2)+cswsub,y-8+yoff,
 			(image_xscale*scale),(image_yscale*scale),image_blend,image_alpha);

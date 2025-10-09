@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "ps_pivot",
-  "isDnD": false,
-  "isCompatibility": false,
-  "parent": {
-    "name": "Scripts",
-    "path": "folders/Objects/Mario/Scripts.yy",
+  "$GMScript":"v1",
+  "%Name":"ps_pivot",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ps_pivot",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Objects/Mario/Scripts.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

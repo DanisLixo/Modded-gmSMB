@@ -1,9 +1,8 @@
 
 function disconnecttt() {
 	if object_index == oPaused {instance_activate_object(oClient);}
-	var disconnected = false
 	if (!instance_exists(oClient)) {
-		show_message("You're no longer connected.");	
+		show_message_async("You're no longer connected.");	
 	} else {
 		if (instance_exists(oClient.Player)) {
 			
@@ -34,10 +33,7 @@ function disconnecttt() {
 			network_send_packet(oClient.client, dis_buff, buffer_tell(dis_buff));
 			buffer_delete(dis_buff);
 			
-			disconnected = true;
-			
-		} else {
-			show_message("The player existing is not!");	
-		}
+			oClient.disconnected = true;
+		} 
 	}
 }

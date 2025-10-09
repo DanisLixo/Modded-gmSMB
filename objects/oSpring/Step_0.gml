@@ -14,7 +14,8 @@ if issecret != false
 	if issecret = 3
 	{
 		with(oMario) {
-			if instance_place(x,y,oBeanstalktopwarp) {room_goto(instance_place(x,y,oBeanstalktopwarp).troom)}
+			if instance_place(x,y,oBeanstalktopwarp) 
+			{room_goto(instance_place(x,y,oBeanstalktopwarp).troom)}
 		}
 	}
 	
@@ -99,7 +100,7 @@ if moving = true {
 }
 m = instance_place(x+8*dir,y,oMario);
 
-if m && global.movestatics = true && m.state = ps.nah
+if m && global.moveStatics = true && m.state = ps.nah
 {
 	moving = true
 	dir = -dir

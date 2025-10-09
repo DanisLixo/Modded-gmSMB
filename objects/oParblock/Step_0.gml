@@ -1,3 +1,24 @@
+var m = instance_place(x,y-4,oMario)
+
+if moving = true 
+{
+	x += g*gspd
+	if place_meeting(x+g,y,oParblock) {moving = false; sfx(sndBump,0);}
+	if place_meeting(x+g,y,oCol) {moving = false; sfx(sndBump,0);}
+	if m && m.vspd >= 0
+	{m.x += g; if m.x > camera_get_view_x(view_camera[0])+SCREENW/2 {oCamera.x += g;}}
+}
+
+if m && global.moveStatics && m.state = ps.nah
+{
+	if m.khp {sfx(sndBump,0);}
+	moving = true
+	if m.image_xscale = 1
+		{if g = -1 {g = 1}}
+	if m.image_xscale = -1
+		{if g = 1 {g = -1}}
+}
+
 if instance_exists(oIsArena)
 {
 	if arenarespawn > 0
@@ -21,7 +42,7 @@ if triggerbreak = true && object_index = oBrickblock && contents = conts.empty
 {
 	if instance_nearest(x,bbox_bottom,oMario).object_index = oLuigi {global.p2_score += 50;}
 	else {global.score += 50;}
-	sfx(sndBreak,3);
+	sfx(sndBreak,1);
 	
 	instance_create_depth(x,y,depth-1,oBlockhit).image_alpha = 0;
 	
@@ -45,7 +66,6 @@ if blockstate = 0
 
 if blockstate = 1
 {	
-	var p = irandom_range(0,1)
 	switch(contents)
 	{
 		case conts.coin:
@@ -53,15 +73,34 @@ if blockstate = 1
 		break;
 		
 		case conts.powerup:
+			var _powerup = noone
+		
 			sfx(sndItem,0);
-			if instance_exists(oMario) && instance_nearest(x,y,oMario).powerup = "s"
-			{instance_create_depth(x+8,y+16,depth,oMush);}
-			else
-			{
-				if instance_nearest(x,y,oMario).char != "Feathy" || !global.abilities {p = 1}
-				if p {instance_create_depth(x+8,y+16,depth,oFireflower);} 
-				else {instance_create_depth(x+8,y+16,depth,oFeather);}
+			if instance_exists(oMario) {
+				if instance_nearest(x,y,oMario).powerup = "s" || instance_nearest(x,y,oMario).powerup = "sf"
+				{
+					//_powerup = choose(oMush, oFireflowermini);
+					_powerup = oMush;
+				}
+				else if global.abilities
+				{
+					switch (instance_nearest(x,y,oMario).char) 
+					{
+						case "Feathy": _powerup = choose(oFireflower, oFeather); break;
+						case "Dawn": _powerup = oFirebow; break;
+						case "Gemaplys": _powerup = choose(oFireflower, oFirehat); break;
+						case "Pokey": _powerup = oFirehat; break;
+						default: _powerup = oFireflower; break;
+					}
+				} 
+				else {_powerup = oFireflower;}
+				
+				if is_onArena() 
+				{
+					var _powerup = choose(oFireflower, oFirebow, oFirehat, oFeather, oFireflowermini)
+				}
 			}
+			instance_create_depth(x+8,y+16,depth,_powerup);
 		break;
 		
 		case conts.star:
@@ -115,24 +154,3 @@ if blockstate = -1
 
 if blockstate = 2
 {image_alpha = 0;}
-
-var m = instance_place(x,y-4,oMario)
-
-if moving = true 
-{
-	x += g*gspd
-	if place_meeting(x+g,y,oParblock) {moving = false; sfx(sndBump,0);}
-	if place_meeting(x+g,y,oCol) {moving = false; sfx(sndBump,0);}
-	if m && m.vspd >= 0
-	{m.x += g; if m.x > camera_get_view_x(view_camera[0])+SCREENW/2 {oCamera.x += g;}}
-}
-
-if m && global.movestatics && m.state = ps.nah
-{
-	if m.khp {sfx(sndBump,0);}
-	moving = true
-	if m.image_xscale = 1
-		{if g = -1 {g = 1}}
-	if m.image_xscale = -1
-		{if g = 1 {g = -1}}
-}

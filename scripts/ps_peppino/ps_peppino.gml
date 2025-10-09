@@ -98,8 +98,7 @@ function ps_taunt()
 function ps_dancepep()
 {
 	if !grounded || !ku {state = ps.normal; pepdancin = -1;}
-	
-	spr = sPeppino_breakdance;
+	else {spr = sPeppino_breakdance;}
 	
 	if pepdancin < 50 {pepdancin++;}
 	

@@ -14,4 +14,5 @@ function ps_nah()
 	if ku {state = ps.dance0}
 	do_spincarp();
 	do_fire();
+	do_shoulderbash()
 }

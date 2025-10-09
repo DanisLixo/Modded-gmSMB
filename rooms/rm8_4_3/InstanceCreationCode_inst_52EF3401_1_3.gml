@@ -1,1 +1,1 @@
-state = ps.exitpipeup
+state = ps.exitpipe

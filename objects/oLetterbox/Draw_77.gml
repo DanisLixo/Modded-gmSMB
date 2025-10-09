@@ -1,3 +1,5 @@
+if !window_get_fullscreen() {exit;}
+
 shader_set(shdColorswap);
 	var color = c_white;
 	if global.letterboxSprite = sLetterbox_Character {apply_palette(sPalette_tilebrown,global.environment,image_alpha)}

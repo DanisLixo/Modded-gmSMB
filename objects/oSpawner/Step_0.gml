@@ -5,7 +5,7 @@ var cx2 = camera_get_view_x(view_camera[0]) + SCREENW + 128;
 	
 var x1 = 512; var x2 = instance_exists(oFlag)? oFlag.x-32 : room_height-64;
 var y1 = 0; var y2 = 16; 
-var enemy = choose(oBuzzy, oGoomba, oHammerbro, oLakitu, oNokonoko, oNokonoko_red, oSpiny, oFakeBowser, oMush, oFireflower, oStar);
+var enemy = choose(oBuzzy, oGoomba, oHammerbro, oLakitu, oNokonoko, oNokonoko_red, oSpiny, o2Cheep, oBlooper, oFakeBowser, oMush, oFireflower, oStar, oFireflowermini, oFirebow, oFirehat, oFirearrow, oFireball, oSkateboard);
 //var enemy = oLakitu;
 	
 var xx = choose(irandom_range(cx1, cx2), irandom_range(x1, x2));

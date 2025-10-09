@@ -2,8 +2,7 @@ y += vspd
 
 vspd += 0.4
 
-if coinspr == sRing || coinspr == sBigring || coinspr == sRingunderwater {sprite_index = sRingjump}
-else {sprite_index = sCoinjump}
+sprite_index = custom_sprite(sCoinjump, coinspr);
 draw_self();
 
 

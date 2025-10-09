@@ -5,7 +5,6 @@ if other.x >= bbox_left+8 && other.state != ps.flagpoledescend && other.state !=
 {
 	other.state = ps.flagpoledescend
 
-	
 	other.x = bbox_left+8;
 	audio_stop_all();
 	
@@ -15,9 +14,6 @@ if other.x >= bbox_left+8 && other.state != ps.flagpoledescend && other.state !=
 	
 	if instance_exists(oFlag)
 	{instance_nearest(x,y,oFlag).down = true}
-	
-	bgm(-1,0)
-	
 	
 	var amnt = 0;
 	var top = bbox_top+16;

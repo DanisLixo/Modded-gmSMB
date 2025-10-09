@@ -1,14 +1,14 @@
 /// @function apply_palette
 /// @description Change the palette of the sprite, it needs to be used before the draw_sprite() function
-/// @param {Sprite Asset} [Palette Sprite] Sprite with the palette, it grabs at least a 4 colors palette
-/// @param {Real} [Palette Index] Index with the color row to replace, replace the first color row with other row
-/// @param {Float} [Alpha] Alpha to apply into the sprite.
+/// @param {Sprite Asset} palspr Sprite with the palette it grabs at least a 4 colors palette
+/// @param {Real} palind Index with the color row to replace, replace the first color row with other row
+/// @param {Float} alp Alpha to apply into the sprite.
 function apply_palette(palspr,palind,alp)
 {
 	var ui; var uc;
 	var ar0; var ar1;
 	var palw = 0;
-	if sprite_exists(palspr) {palw = sprite_get_width(palspr)-1;}
+	if sprite_exists(palspr) {palw = sprite_get_width(palspr);}
 	
 	try {
 		for (var i = 0; i < palw; i ++;)
@@ -26,12 +26,12 @@ function apply_palette(palspr,palind,alp)
 			shader_set_uniform_f_array(uc,ar1);
 		}
 	} catch(palerr) {
-		show_message("Palette index or sprite does not exist, returning values to the last palette of the object: " + object_get_name(object_index));
-		update_playerpalette();
-		update_playerpalette(true);
-		
+		//show_message_async("Palette index or sprite does not exist, returning values to the last palette of the object: " + object_get_name(object_index));
 		global.paletteindex = sprite_get_height(global.palettesprite)-1
 		global.p2_paletteindex = sprite_get_height(global.p2_palettesprite)-1
+		global.environment = 0;
 		
+		update_player();
+		update_player(global.playertwo);
 	}
 }

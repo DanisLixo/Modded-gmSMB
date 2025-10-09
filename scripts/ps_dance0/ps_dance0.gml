@@ -11,7 +11,7 @@ function ps_dance0()
 	
 	if krp - klp != 0 or kjp
 	{state = ps.normal;}
-	if kdp && powerup != "s" && !(char = "Dawn" && char = "Sonic" and global.abilities)
+	if kdp && (powerup != "s" && powerup != "sf") && !(char = "Dawn" && char = "Sonic" and global.abilities)
 	{state = ps.crouch;}
 	else if kdp && (char = "Dawn" or char = "Sonic")
 	{state = ps.crouch;}

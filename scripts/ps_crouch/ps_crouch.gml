@@ -7,7 +7,7 @@ function ps_crouch()
 	
 	if global.abilities
 		if char != "Sonic" {do_jump()}
-		else if powerup = "s" {
+		else if ((powerup = "s" || powerup = "sf") || powerup = "sf") {
 			do_jump()
 			if (hspd < -0.4 and image_xscale = -1) or hspd > 0.4 {
 				if !sound {sfx(sndSpindash,1);}
@@ -25,7 +25,7 @@ function ps_crouch()
 				spr = ms("sMario_{}_spinjump"); spin = true;
 				}
 			if spin {ind += 0.15}
-			if kd and hspd >= -0.01 and hspd <= 0.01 and kjp and !spin and powerup != "s"
+			if kd and hspd >= -0.01 and hspd <= 0.01 and kjp and !spin and (powerup != "s" && powerup != "sf")
 			{state = ps.spindash; spinclicks++; spinboost += 4*image_xscale; sfx(sndSpindash,1);}
 			if hspd != 0 {do_jump();}
 		}
@@ -41,18 +41,18 @@ function ps_crouch()
 	collide();
 	
 	if global.abilities {
-		if (!kd or powerup = "s") and char != "Dawn" and char != "Sonic"
+		if (!kd || (powerup = "s" || powerup = "sf") || powerup = "sf") and char != "Dawn" and char != "Sonic"
 		{state = ps.normal;}
 		else if !kd and (char = "Dawn" or char = "Sonic") and !sdcheck and spin = false
 		{state = ps.normal;}
 	
 		if !grounded and char != "Sonic"
 		{state = ps.jump;}
-		else if !grounded and char = "Sonic" and powerup != "s"
+		else if !grounded and char = "Sonic" and (powerup != "s" && powerup != "sf")
 		{state = ps.jump;}
 	}
 	else {
-		if (!kd or powerup = "s") and char != "Dawn"
+		if (!kd || (powerup = "s" || powerup = "sf") || powerup = "sf") and char != "Dawn"
 		{state = ps.normal;}
 		else if !kd and char = "Dawn"
 		{state = ps.normal;}

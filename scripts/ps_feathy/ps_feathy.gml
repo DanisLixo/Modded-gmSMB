@@ -1,17 +1,3 @@
-function do_spincarp()
-{
-	if kap && powerup = "c" and spintimer <= 0 {
-		spintimer = 30;
-	}
-	
-	if spintimer > 0 {
-		spr = ms("sMario_{}_spin"); ind += 0.4;
-		if spintimer = 1 and !grounded {
-			spr = ms("sMario_{}_jump"); ind = 0
-		}
-	}
-}
-
 function ps_fly()
 {
 	var moveh = (image_xscale)? kr-kl : kl-kr
@@ -79,14 +65,34 @@ function ps_fly()
 
 function ps_sneeze()
 {
+	in_cutscene = true;
 	hspd -= 0.1;
+	pmet = 0;
 	
-	if hspd > 0 {ind = 0; spr = ms("sMario_{}_allerg"); x += hspd*-image_xscale}
-	else if hspd <= -3 {
-		spr = ms("sMario_{}_sneeze"); 
+	vspd = clamp(vspd,-2,4);
+	
+	if !place_meeting(x,bbox_bottom+vspd,oCol) || !place_meeting(x,bbox_bottom+vspd,oSemicol)
+	{vspd += 0.4;} else {vspd = 0; y = instance_place(x,bbox_bottom+vspd,oCol).bbox_top+1;}
+	
+	if hspd > 0 {
+		ind = 0; 
+		spr = ms("sMario_{}_allerg");
+		
+		if !place_meeting(x,bbox_bottom+vspd,oCol) || !place_meeting(x,bbox_bottom+vspd,oSemicol)
+		{spr = ms("sMario_{}_airallerg");}
+		
+		x += hspd*-image_xscale;
+		y += vspd
+	} else if hspd <= -3 && 
+	(instance_place(x,bbox_bottom+vspd,oCol) || instance_place(x,bbox_bottom+vspd,oSemicol)) {
+		spr = ms("sMario_{}_sneeze");
 		ind += 0.1;
-		if ind >= 16 and not sound {sfx(sndAtchim,0); sound = true;}
-		if ind >= 17 and instance_exists(oFireflower) {instance_nearest(x,y,oFireflower).float = true;}
-		if ind >= 41 {state = ps.normal; hspd = 0 ind = 0}
+		if ind >= 16 and not sound {
+			sfx(sndAtchim,0); 
+			sound = true;
+		}
+		if ind >= 17 and instance_exists(oFireflower) 
+		{instance_nearest(x,y,oFireflower).float = true;}
+		if ind >= 41 {state = ps.normal; hspd = 0; ind = 0; in_cutscene = false;}
 	}
 }

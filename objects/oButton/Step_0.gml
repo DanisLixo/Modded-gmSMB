@@ -12,3 +12,4 @@ if button = global.keya {sprite_index = sB}
 if button = global.keyh {sprite_index = sHold}
 if button = vk_enter {sprite_index = sEnter}
 if button = vk_tab {sprite_index = sTab}
+if button = vk_escape {sprite_index = sEsc}
